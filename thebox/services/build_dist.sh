@@ -1,3 +1,4 @@
+
 if [ "$(python --version | grep 'Python 3.' > /dev/null && echo 1 || echo 0)" == "0" ]; then
     echo "Please use a virtual env that has Python 3 and above"
 fi
