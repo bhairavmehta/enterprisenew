@@ -9,8 +9,10 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
+                    echo \"Hello from \$SHELL\"
                     apt-get update
                     apt-get install -y docker-compose
+                    apt-get install python3.6
                 '''
 
                 sh '''
