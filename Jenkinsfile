@@ -12,11 +12,6 @@ pipeline {
                     echo \"Hello from \$SHELL\"
                     apt-get update
                     apt-get install -y docker-compose
-                    apt install -y software-properties-common
-                    add-apt-repository ppa:deadsnakes/ppa
-                    apt update
-                    apt install -y python3.6
-                    apt install -y python3-pip
                 '''
 
                 sh '''
@@ -30,6 +25,7 @@ pipeline {
 
                     echo source /usr/local/bin/virtualenvwrapper.sh >> ~/.bashrc
                     source ~/.bashrc
+                    cat /usr/local/bin/virtualenvwrapper.sh
                     mkvirtualenv thebox_dev -p ${VIRTUALENVWRAPPER_PYTHON}'
                     workon thebox_dev
                 '''
