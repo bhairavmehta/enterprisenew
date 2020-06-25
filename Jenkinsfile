@@ -9,8 +9,8 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
-                    apk --no-cache update
-                    apk --no-cache upgrade
+                    apt-get --no-cache update
+                    apt-get --no-cache upgrade
                     apt-get add docker-compose
                 '''
 
