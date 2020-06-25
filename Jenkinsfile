@@ -19,14 +19,11 @@ pipeline {
                     pip3 install virtualenvwrapper
                     mkdir ~/github_projects
                     echo "# Python Virtualenv Settings" >> ~/.bashrc
-                    which python3
                     echo export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3 >> ~/.bashrc
                     echo export WORKON_HOME=\$HOME/.virtualenvs >> ~/.bashrc
                     echo export PROJECT_HOME=\$HOME/github_projects >> ~/.bashrc
-
                     echo source /usr/local/bin/virtualenvwrapper.sh >> ~/.bashrc
                     source ~/.bashrc
-                    cat /usr/local/bin/virtualenvwrapper.sh
                     mkvirtualenv thebox_dev -p ${VIRTUALENVWRAPPER_PYTHON}'
                     workon thebox_dev
                 '''
