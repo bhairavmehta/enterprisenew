@@ -22,6 +22,7 @@ pipeline {
                     echo export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3 >> ~/.bashrc
                     echo export WORKON_HOME=\$HOME/.virtualenvs >> ~/.bashrc
                     echo export PROJECT_HOME=\$HOME/github_projects >> ~/.bashrc
+                    echo alias python=\'python3\' >> ~/.bashrc
                     source ~/.bashrc
                     apt-get install -y dos2unix
                     cd thebox/services
