@@ -25,10 +25,8 @@ pipeline {
                     source ~/.bashrc
                     cd thebox/services
                     pip3 install -r requirements.txt
+                    chmod +x build_dist.sh
                     ./build_dist.sh
-                '''
-
-                sh '''
                     cd ../docker
                     make
                 '''
