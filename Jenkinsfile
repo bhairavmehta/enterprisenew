@@ -11,16 +11,7 @@ pipeline {
                 sh '''
                     echo \"Hello from \$SHELL\"
                     apt-get update
-                    apt-get install -y docker-compose
-                    apt-get install -y \\
-                        apt-transport-https \\
-                        ca-certificates \\
-                        curl \\
-                        gnupg-agent \\
-                        software-properties-common
-                    add-apt-repository ppa:ubuntu-sdk-team/ppa
-                    apt-get update
-                    apt-get install -y docker-ce
+                    apt-get install -y docker-compose docker-ce
                 '''
 
                 sh '''
