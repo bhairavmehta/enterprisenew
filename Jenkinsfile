@@ -23,10 +23,8 @@ pipeline {
                     echo export WORKON_HOME=\$HOME/.virtualenvs >> ~/.bashrc
                     echo export PROJECT_HOME=\$HOME/github_projects >> ~/.bashrc
                     source ~/.bashrc
-                    ls
                     cd thebox/services
                     pip3 install -r requirements.txt
-                    python3 workaround.py
                     ./build_dist.sh
                 '''
 
