@@ -15,7 +15,7 @@ pipeline {
 
                 sh '''
                     apt-get install -y virtualenv python3 python3-pip
-                    -H pip3 install virtualenvwrapper
+                    pip3 install virtualenvwrapper
                     mkdir ~/github_projects
                     echo "# Python Virtualenv Settings" >> ~/.bashrc
                     echo export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.6 >> ~/.bashrc
