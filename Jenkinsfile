@@ -23,8 +23,11 @@ pipeline {
                     echo export WORKON_HOME=\$HOME/.virtualenvs >> ~/.bashrc
                     echo export PROJECT_HOME=\$HOME/github_projects >> ~/.bashrc
                     source ~/.bashrc
+                    apt-get install -y dos2unix
+                    cd thebox/services
+                    dos2unix build_dist.sh
 
-                    cd thebox/docker
+                    cd ../docker
                     make
                 '''
 
