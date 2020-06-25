@@ -29,6 +29,9 @@ pipeline {
                 '''
 
                 sh '''
+                    pwd
+                    cd /var/jenkins_home
+                    ls
                     cd /repo/enterprise.mhhd/thebox/services
                     pip install -r requirements.txt
                     python workaround.py
