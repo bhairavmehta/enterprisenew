@@ -1,0 +1,31 @@
+version: "2.0"
+services:
+  registryv2:
+    image: registry:latest
+    restart: always
+    ports:
+      - 5001:5000
+    volumes:
+      - ${LOCAL_REGISTRY_STORE_PATH}:/var/lib/registry
+    environment:
+      - REGISTRY_HTTP_ADDR=0.0.0.0:5000
+      - REGISTRY_STORAGE_DELETE_ENABLED=true
+    networks:
+      - registry-ui-net
+
+  ui:
+    image: joxit/docker-registry-ui:${REGISTRY_UI_IMAGE_TAG}
+    restart: always
+    ports:
+      - 5002:80
+    environment:
+      - REGISTRY_TITLE=My Private Registry
+      - REGISTRY_URL=http://registryv2:5000
+      - DELETE_IMAGES=true
+    depends_on:
+      - registryv2
+    networks:
+      - registry-ui-net
+
+networks:
+  registry-ui-net:

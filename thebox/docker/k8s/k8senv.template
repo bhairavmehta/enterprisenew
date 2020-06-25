@@ -1,0 +1,17 @@
+# Please make a copy of this file and update the relevant settings
+
+# Registry's address seen inside the router's NAT subnet
+# e.g. thebox2-pi2:443
+DOCKER_REGISTRY=
+# IP address of a cluster node seen inside the router subnet
+# e.g. 192.168.1.122
+KUBERNETES_CLUSTER_IP=
+# Host name and forwarded port of the Kafka endpoint
+# e.g. theboxrouter.guest.corp.microsoft.com:2201
+EXTERNAL_PUBSUB_ENDPOINT=
+# The storage server information to hosting persistent data
+# e.g. 192.168.1.122
+STORAGE_SERVER=
+# The path (usually NFS) exported by the storage server
+# default to /mnt/nfs_thebox
+STORAGE_SERVER_PATH=/mnt/nfs_thebox

@@ -1,0 +1,50 @@
+# Windows Container version
+# To enable highlighting in VSCode, add following section in .vscode/settings.json:
+#  "files.associations": {
+#    "Dockerfile.win": "dockerfile"
+#  }
+ARG WINVER
+FROM mcr.microsoft.com/windows:$WINVER
+
+# Install Chocolatey
+RUN powershell.exe -Command \
+  Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+# Set PowerShell execution policy (for prototype containers, before we are able to sign all the scripts)
+RUN powershell.exe Set-ExecutionPolicy unrestricted
+
+# Download and install JRE
+RUN choco install adoptopenjdk8jre sed -y
+
+# Download and install ZooKeeper
+# References:
+# - https://www.edureka.co/community/39059/installing-zookeeper-on-windows
+# - https://www.cnblogs.com/dupang/p/6036357.html (troubleshooting)
+ARG ZOOKEEPER_VERSION=3.4.14
+RUN powershell.exe -Command \
+  $ErrorActionPreference = 'Stop'; \
+  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
+  wget http://downloads.apache.org/zookeeper/zookeeper-$env:ZOOKEEPER_VERSION/zookeeper-$env:ZOOKEEPER_VERSION.tar.gz -OutFile zookeeper-$env:ZOOKEEPER_VERSION.tar.gz ;
+
+RUN mkdir c:\zookeeper && \
+    tar -xvf zookeeper-%ZOOKEEPER_VERSION%.tar.gz -C /zookeeper
+
+# Configure ZooKeeper
+ENV ZK_HOME=c:\\zookeeper\\zookeeper-${ZOOKEEPER_VERSION}
+RUN copy %ZK_HOME%\conf\zoo_sample.cfg %ZK_HOME%\conf\zoo.cfg
+RUN sed -i "s|/tmp/zookeeper|c:/zookeeper/zookeeper-%ZOOKEEPER_VERSION%/data|g" %ZK_HOME%\conf\zoo.cfg && \
+    mkdir %ZK_HOME%\data
+
+ADD start-zk.cmd /start-zk.cmd
+ADD zkServer.cmd /zkServer.cmd
+# RUN dir %JAVA_HOME%
+# CMD c:\\zkServer.cmd %ZK_HOME%\bin\zkServer.cmd
+
+EXPOSE 2181 2888 3888
+
+WORKDIR c:/zookeeper/zookeeper-${ZOOKEEPER_VERSION}
+# BUG:
+# VOLUME on Windows container doesn't seem to copy the config files, so we disable for now
+# VOLUME ["c:/zookeeper/zookeeper-${ZOOKEEPER_VERSION}/conf", "c:/zookeeper/zookeeper-${ZOOKEEPER_VERSION}/data"]
+
+CMD c:\\start-zk.cmd

@@ -1,0 +1,32 @@
+# Windows Container version
+# To enable highlighting in VSCode, add following section in .vscode/settings.json:
+#  "files.associations": {
+#    "Dockerfile.win": "dockerfile"
+#  }
+ARG WINVER
+FROM mcr.microsoft.com/windows:$WINVER
+
+# Set PowerShell execution policy (for prototype containers, before we are able to sign all the scripts)
+RUN powershell.exe Set-ExecutionPolicy unrestricted
+
+# Obtain CouchDB
+ARG COUCHDB_VERSION=2.3.1
+RUN powershell.exe -Command \
+  $ErrorActionPreference = 'Stop'; \
+  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
+  wget https://apache.bintray.com/couchdb/win/$env:COUCHDB_VERSION/apache-couchdb-$env:COUCHDB_VERSION.msi -OutFile apache-couchdb-$env:COUCHDB_VERSION.msi ;
+
+# Run Setup which will register "Apache CouchDB" service for auto-start
+RUN powershell.exe -Command \
+  Start-Process msiexec -ArgumentList "\"/i apache-couchdb-$env:COUCHDB_VERSION.msi /qn /quiet\"" -Wait ; \
+  Remove-Item c:\apache-couchdb-$env:COUCHDB_VERSION.msi -Force
+
+# Copy start-up scripts and mark the image as fresh by laying down 'firstrun.txt' file
+COPY firstrun.ps1 couchdb.ps1 /scripts/
+RUN powershell.exe -Command \
+  New-Item -Path c:\ -Name firstrun.txt -ItemType File
+
+ENV COUCHDB_HOME=c:\\CouchDB
+
+# Default entry-point
+CMD powershell.exe c:\scripts\couchdb.ps1

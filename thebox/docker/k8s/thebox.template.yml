@@ -1,0 +1,352 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-pvc
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thebox-deployment-zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      name: zookeeper
+      labels:
+        app: zookeeper
+    spec:
+      hostname: zookeeper
+      containers:
+        - name: zookeeper
+          image: ${DOCKER_REGISTRY}/arm32v7/thebox_zookeeper:latest
+          ports:
+            - containerPort: 2181
+          resources:
+            requests:
+              memory: "256Mi"
+      nodeSelector:
+        thebox_resource_type: arm_cpu
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thebox-deployment-kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka
+  template:
+    metadata:
+      name: kafka
+      labels:
+        app: kafka
+    spec:
+      hostname: kafka
+      containers:
+        - name: kafka
+          image: ${DOCKER_REGISTRY}/arm32v7/thebox_kafka:latest
+          volumeMounts:
+            - name: nfs-share
+              mountPath: /kafka/kafka-logs
+          ports:
+            - containerPort: 9092
+            - containerPort: 9093
+          env:
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: "INTERNAL_PLAINTEXT:PLAINTEXT,EXTERNAL_PLAINTEXT:PLAINTEXT"
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: "INTERNAL_PLAINTEXT://kafka-service-int:9092,EXTERNAL_PLAINTEXT://${EXTERNAL_PUBSUB_ENDPOINT}"
+            - name: KAFKA_LISTENERS
+              value: "INTERNAL_PLAINTEXT://0.0.0.0:9092,EXTERNAL_PLAINTEXT://0.0.0.0:9093"
+            - name: KAFKA_INTER_BROKER_LISTENER_NAME
+              value: "INTERNAL_PLAINTEXT"
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              value: "zookeeper-service-int:2181"
+            - name: KAFKA_HEAP_OPTS
+              value: "-Xmx512M -Xms256M"
+            - name: KAFKA_JVM_PERFORMANCE_OPTS
+              value: "-client -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:+ExplicitGCInvokesConcurrent -Djava.awt.headless=true"
+            - name: KAFKA_CREATE_TOPICS
+              value: "orchestration_inference_service:1:1,orchestration_notification_service:1:1"
+            - name: KAFKA_MESSAGE_MAX_BYTES
+              value: "10485760"
+            - name: KAFKA_REPLICA_FETCH_MAX_BYTES
+              value: "10485760"
+          resources:
+            requests:
+              memory: "512Mi"
+      volumes:
+        - name: nfs-share
+          persistentVolumeClaim:
+            claimName: nfs-pvc
+      nodeSelector:
+        thebox_resource_type: arm_cpu
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thebox-deployment-couchdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: couchdb
+  template:
+    metadata:
+      name: couchdb
+      labels:
+        app: couchdb
+    spec:
+      hostname: couchdb
+      containers:
+        - name: couchdb
+          image: treehouses/couchdb:latest
+          volumeMounts:
+            - name: nfs-share
+              mountPath: /opt/couchdb/data
+          ports:
+            - containerPort: 5984
+          env:
+            - name: COUCHDB_USER
+              value: testuser
+            - name: COUCHDB_PASSWORD
+              value: testpassword
+          resources:
+            requests:
+              memory: "128Mi"
+      volumes:
+        - name: nfs-share
+          persistentVolumeClaim:
+            claimName: nfs-pvc
+      nodeSelector:
+        thebox_resource_type: arm_cpu
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thebox-deployment-orchestrator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orchestrator
+  template:
+    metadata:
+      name: orchestrator
+      labels:
+        app: orchestrator
+    spec:
+      hostname: orchestrator
+      containers:
+        - name: orchestrator
+          image: ${DOCKER_REGISTRY}/arm32v7/thebox_orchestrator:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: THEBOX_STORE_COUCHDB_CONNECTION
+              value: "http://couchdb-service-int:5984/"
+            - name: THEBOX_STORE_COUCHDB_USERNAME
+              value: testuser
+            - name: THEBOX_STORE_COUCHDB_USERTOKEN
+              value: testpassword
+            - name: THEBOX_EVENTQUEUE_KAFKA_SERVER
+              value: "kafka-service-int:9092"
+            - name: SERVICE_DEPENDENCIES
+              value: "kafka-service-int:9092;couchdb-service-int:5984"
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "128Mi"
+      nodeSelector:
+        thebox_resource_type: arm_cpu
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thebox-deployment-notification
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification
+  template:
+    metadata:
+      name: notification
+      labels:
+        app: notification
+    spec:
+      hostname: notification
+      containers:
+        - name: notification
+          image: ${DOCKER_REGISTRY}/arm32v7/thebox_notification:latest
+          env:
+            - name: THEBOX_STORE_COUCHDB_CONNECTION
+              value: "http://couchdb-service-int:5984/"
+            - name: THEBOX_STORE_COUCHDB_USERNAME
+              value: testuser
+            - name: THEBOX_STORE_COUCHDB_USERTOKEN
+              value: testpassword
+            - name: THEBOX_EVENTQUEUE_KAFKA_SERVER
+              value: "kafka-service-int:9092"
+            - name: SERVICE_DEPENDENCIES
+              value: "kafka-service-int:9092;couchdb-service-int:5984"
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "128Mi"
+      nodeSelector:
+        thebox_resource_type: arm_cpu
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thebox-deployment-inference
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inference
+  template:
+    metadata:
+      name: inference
+      labels:
+        app: inference
+    spec:
+      hostname: inference
+      containers:
+        - name: inference
+          image: ${DOCKER_REGISTRY}/arm64v8/thebox_inference:latest
+          env:
+            - name: THEBOX_STORE_COUCHDB_CONNECTION
+              value: "http://couchdb-service-int:5984/"
+            - name: THEBOX_STORE_COUCHDB_USERNAME
+              value: testuser
+            - name: THEBOX_STORE_COUCHDB_USERTOKEN
+              value: testpassword
+            - name: THEBOX_EVENTQUEUE_KAFKA_SERVER
+              value: "kafka-service-int:9092"
+            - name: SERVICE_DEPENDENCIES
+              value: "kafka-service-int:9092;couchdb-service-int:5984"
+          volumeMounts:
+            - mountPath: /dev/nvhost-ctrl
+              name: nvhost-ctrl
+            - mountPath: /dev/nvhost-ctrl-gpu
+              name: nvhost-ctrl-gpu
+            - mountPath: /dev/nvhost-prof-gpu
+              name: nvhost-prof-gpu
+            - mountPath: /dev/nvmap
+              name: nvmap
+            - mountPath: /dev/nvhost-gpu
+              name: nvhost-gpu
+            - mountPath: /dev/nvhost-as-gpu
+              name: nvhost-as-gpu
+          securityContext:
+            privileged: true
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "1024Mi"
+      volumes:
+        - name: nvhost-ctrl
+          hostPath:
+            path: /dev/nvhost-ctrl
+        - name: nvhost-ctrl-gpu
+          hostPath:
+            path: /dev/nvhost-ctrl-gpu
+        - name: nvhost-prof-gpu
+          hostPath:
+            path: /dev/nvhost-prof-gpu
+        - name: nvmap
+          hostPath:
+            path: /dev/nvmap
+        - name: nvhost-gpu
+          hostPath:
+            path: /dev/nvhost-gpu
+        - name: nvhost-as-gpu
+          hostPath:
+            path: /dev/nvhost-as-gpu
+      nodeSelector:
+        thebox_resource_type: arm64_gpu
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: zookeeperservice
+  name: zookeeper-service-int
+spec:
+  type: ClusterIP
+  ports:
+    - port: 2181
+      targetPort: 2181
+  selector:
+    app: zookeeper
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: couchdbservice
+  name: couchdb-service-int
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5984
+      targetPort: 5984
+  selector:
+    app: couchdb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: kafkaserviceint
+  name: kafka-service-int
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9092
+      targetPort: 9092
+  selector:
+    app: kafka
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: kafkaservice
+  name: kafka-service
+spec:
+  type: NodePort
+  ports:
+    - port: 9093
+      targetPort: 9093
+      nodePort: 30093
+  selector:
+    app: kafka
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: orchestratorservice
+  name: orch-service
+spec:
+  type: NodePort
+  ports:
+    - port: 5000
+      targetPort: 5000
+      nodePort: 30080
+  selector:
+    app: orchestrator

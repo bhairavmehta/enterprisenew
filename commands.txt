@@ -1,0 +1,19 @@
+docker container run --name jenkins-entp --rm -it ^
+  --network jenkins --env DOCKER_HOST=tcp://docker:2376 ^
+  --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 ^
+  --volume C:\Users\Ivan\Desktop\Work\Bhairav-Mehta:/repo ^
+  --volume jenkins-docker-certs:/certs/client:ro ^
+  --publish 8080:8080 -u root --publish 50000:50000 jenkins-ubuntu
+
+docker container run --name jenkins-entp --rm --detach ^
+  --network jenkins --env DOCKER_HOST=tcp://docker:2376 ^
+  --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 ^
+  --volume C:\Users\Ivan\Desktop\Work\Bhairav-Mehta:/repo ^
+  --volume jenkins-docker-certs:/certs/client:ro ^
+  --publish 8080:8080 -u root --publish 50000:50000 partlab/ubuntu-jenkins
+
+
+git add *
+git commit -m "nits"
+
+

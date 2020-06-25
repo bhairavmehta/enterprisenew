@@ -1,0 +1,67 @@
+{
+  "scenario_name": "peek over shoulder scenario",
+  "scenario_definition":
+  {
+    "inference_definition":
+    {
+      "in_topic": "in_topic_pos_infer_test",
+      "out_topic": "out_topic_pos_infer_test",
+      "model_descriptor":
+      {
+        "model_type": "TENSORFLOW",
+        "model_name": "FaceDetectionCNN",
+        "model_input_info": [
+          {
+              "data_name": "image_tensor",
+              "data_type": "float32",
+              "data_shape": [1, 480, 480, 3]
+          }
+        ],
+        "model_output_info": [
+          {
+            "data_name": "detection_boxes",
+            "data_type": "float32",
+            "data_shape": [1, 100, 4]
+          },
+          {
+              "data_name": "detection_scores",
+              "data_type": "float32",
+              "data_shape": [1, 100]
+          },
+          {
+              "data_name": "detection_classes",
+              "data_type": "float32",
+              "data_shape": [1, 100]
+          },
+          {
+              "data_name": "num_detections",
+              "data_type": "float32",
+              "data_shape": [1]
+          }
+        ],
+        "model_location": "http://jerrylia-lx-1.guest.corp.microsoft.com:8081/facessd.pb"
+      },
+      "pred_type":
+      {
+        "prediction_data_type": "customtype"
+      }
+    },
+    "notification_definition":
+    {
+      "in_topic": "out_topic_pos_infer_test",
+      "out_topic": "out_topic_pos_notif_test",
+      "rules": [
+        {
+          "rule_name": "is_not_alone", 
+          "rule_content": "sum( 1 for fs in np.squeeze(prediction['detection_scores'].data) if fs > 0.7 ) > 1", 
+          "notification_id": "test_notification_not_alone"
+        },
+        {
+          "rule_name": "is_alone", 
+          "rule_content": "sum( 1 for fs in np.squeeze(prediction['detection_scores'].data) if fs > 0.7 ) <= 1", 
+          "notification_id": "test_notification_alone"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+# config.yml
+
+version: 1.0
+store:
+  couchdb:
+    connection: "http://localhost:5984/"
+    username: admin
+    usertoken: ens_test
+eventqueue:
+  kafka:
+    server: "localhost:9092"

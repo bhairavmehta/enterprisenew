@@ -1,0 +1,6 @@
+flask
+flask-CORS
+flask-restful-swagger
+flask-marshmallow
+marshmallow==2.19.5
+marshmallow-dataclass==0.6.6

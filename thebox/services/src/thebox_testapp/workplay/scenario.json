@@ -1,0 +1,57 @@
+{
+    "scenario_name": "work/play test scenario",
+    "scenario_definition":
+    {
+      "inference_definition":
+      {
+        "in_topic": "in_topic_wp_infer_test",
+        "out_topic": "out_topic_wp_infer_test",
+        "model_descriptor":
+        {
+          "model_type": "ONNX",
+          "model_name": "WorkPlayScenario",
+          "model_input_info": [
+            {
+                "data_name": "app",
+                "data_type": "float32",
+                "data_shape": [1, 141]
+            },
+            {
+                "data_name": "url",
+                "data_type": "float32",
+                "data_shape": [1, 5]
+            }
+          ],
+          "model_output_info": [
+            {
+                "data_name": "dense_5/Sigmoid:0", 
+                "data_type": "float32",
+                "data_shape": [1, 1]
+            }
+          ],
+          "model_location": "http://jerrylia-lx-1.guest.corp.microsoft.com:8081/model.onnx.gz"
+        },
+        "pred_type":
+        {
+          "prediction_data_type": "customtype"
+        }
+      },
+      "notification_definition":
+      {
+        "in_topic": "out_topic_wp_infer_test",
+        "out_topic": "out_topic_wp_notif_test",
+        "rules": [
+          {
+            "rule_name": "is_doing_work", 
+            "rule_content": "prediction['dense_5/Sigmoid:0'].data[0] <= 0.4", 
+            "notification_id": "test_notification_doing_work"
+          },
+          {
+            "rule_name": "is_playing", 
+            "rule_content": "prediction['dense_5/Sigmoid:0'].data[0] > 0.4", 
+            "notification_id": "test_notification_playing"
+          }
+        ]
+      }
+    }
+  }

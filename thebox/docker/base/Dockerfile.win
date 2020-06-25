@@ -1,0 +1,42 @@
+# Windows Container version
+# To enable highlighting in VSCode, add following section in .vscode/settings.json:
+#  "files.associations": {
+#    "Dockerfile.win": "dockerfile"
+#  }
+ARG WINVER
+FROM mcr.microsoft.com/windows:$WINVER
+
+# Set PowerShell execution policy (for prototype containers, before we are able to sign all the scripts)
+RUN powershell.exe Set-ExecutionPolicy unrestricted
+
+# Install Chocolatey
+RUN powershell.exe -Command \
+  Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+# Install some tools
+RUN choco install checksum -y
+
+# Install Python3 and update pip
+ARG PYTHON_VERSION=3.6.8
+RUN powershell.exe -Command \
+  $ErrorActionPreference = 'Stop'; \
+  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
+  wget https://www.python.org/ftp/python/$env:PYTHON_VERSION/python-$env:PYTHON_VERSION-amd64.exe -OutFile c:\python-$env:PYTHON_VERSION-amd64.exe ; \
+  Start-Process c:\python-$env:PYTHON_VERSION-amd64.exe -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1' -Wait ; \
+  Remove-Item c:\python-$env:PYTHON_VERSION-amd64.exe -Force
+RUN python -m pip install --upgrade pip
+
+# install common python dependencies
+ARG CHECKSUM_PACKAGELIST
+COPY PythonPackageList.txt /tmp/
+RUN ["pip", "install", "-r", "c:\\tmp\\PythonPackageList.txt", "-v"]
+RUN rd /s /q c:\tmp
+
+# install Windows only packages
+RUN pip install pywin32
+
+# install wait-for-it-ps
+COPY wait-for-it.psm1.temp /tmp/
+RUN md C:\Users\ContainerAdministrator\Documents\WindowsPowerShell\Modules\Wait-For-It
+RUN move C:\tmp\wait-for-it.psm1.temp C:\Users\ContainerAdministrator\Documents\WindowsPowerShell\Modules\Wait-For-It\wait-for-it.psm1
+RUN rd /s /q  c:\tmp

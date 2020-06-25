@@ -1,0 +1,43 @@
+# Windows Container version
+# To enable highlighting in VSCode, add following section in .vscode/settings.json:
+#  "files.associations": {
+#    "Dockerfile.win": "dockerfile"
+#  }
+ARG WINVER
+FROM mcr.microsoft.com/windows:$WINVER
+
+# Install Chocolatey
+RUN powershell.exe -Command \
+  Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+# Set PowerShell execution policy (for prototype containers, before we are able to sign all the scripts)
+RUN powershell.exe Set-ExecutionPolicy unrestricted
+
+# Download and install JRE
+RUN choco install adoptopenjdk8jre sed -y
+
+# Download and install Kafka
+# References:
+#  - https://towardsdatascience.com/running-zookeeper-kafka-on-windows-10-14fc70dcc771
+ARG KAFKA_VERSION=2.2.1
+ARG SCALA_VERSION=2.12
+RUN powershell.exe -Command \
+  $ErrorActionPreference = 'Stop'; \
+  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
+  wget https://archive.apache.org/dist/kafka/$env:KAFKA_VERSION/kafka_$env:SCALA_VERSION-$env:KAFKA_VERSION.tgz -OutFile kafka_$env:SCALA_VERSION-$env:KAFKA_VERSION.tgz ;
+RUN mkdir c:\kafka && \
+  tar -xvf kafka_%SCALA_VERSION%-%KAFKA_VERSION%.tgz -C /kafka && \
+  del kafka_%SCALA_VERSION%-%KAFKA_VERSION%.tgz
+
+ENV KAFKA_VERSION=$KAFKA_VERSION \
+  SCALA_VERSION=$SCALA_VERSION \
+  KAFKA_HOME=c:\\kafka\\kafka_${SCALA_VERSION}-${KAFKA_VERSION}
+
+# Append to PATH variable
+# Note: Windows Environment path works differently than Linux, so ENV PATH=$PATH:sth_else won't work
+#       A workaround is found here: https://stackoverflow.com/questions/42092932/appending-to-path-in-a-windows-docker-container
+RUN setx path "%path%;%KAFKA_HOME\bin"
+
+COPY start-kafka.ps1 create-topics.ps1 /
+
+CMD powershell c:\\start-kafka.ps1

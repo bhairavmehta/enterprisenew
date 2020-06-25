@@ -1,0 +1,3 @@
+# Do not check in temporary files
+*.pb
+*.onnx

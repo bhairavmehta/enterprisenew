@@ -1,0 +1,53 @@
+{
+    "scenario_name": "anomaly detection basic senario",
+    "scenario_definition":
+    {
+      "inference_definition":
+      {
+        "in_topic": "in_topic_ad_infer_test",
+        "out_topic": "out_topic_ad_infer_test",
+        "model_descriptor":
+        {
+          "model_type": "TENSORFLOW",
+          "model_name": "anomalydetection",
+          "model_input_info": [
+            {
+                "data_name": "input_sequence",
+                "data_type": "float32",
+                "data_shape": [1,37]
+            }
+          ],
+          "model_output_info": [
+            {
+                "data_name": "encoding_error/sub", 
+                "data_type": "float32",
+                "data_shape": [1, 1]
+            }
+          ],
+          "model_location": "http://jerrylia-lx-1.guest.corp.microsoft.com:8081/Anomaly_detection_model_v2.pb"
+        },
+        "pred_type":
+        {
+          "prediction_data_type": "classificationtype"
+        }
+      },
+      "notification_definition":
+      {
+        "in_topic": "out_topic_ad_infer_test",
+        "out_topic": "out_topic_ad_notif_test",
+        "rules": [
+          {
+            "rule_name": "is_normal", 
+            "rule_content": "np.mean(prediction['encoding_error/sub'].data**2) < 0.0025", 
+            "notification_id": "test_notification_is_normal"
+          },
+          {
+            "rule_name": "is_abnormal", 
+            "rule_content": "np.mean(prediction['encoding_error/sub'].data**2) >= 0.0025", 
+            "notification_id": "test_notification_is_abnormal"
+          }
+        ]
+      }
+    }
+  }
+

@@ -1,0 +1,362 @@
+{
+  "$schema-template": "2.0.0",
+  "modulesContent": {
+    "$edgeAgent": {
+      "properties.desired": {
+        "schemaVersion": "1.0",
+        "runtime": {
+          "type": "docker",
+          "settings": {
+            "minDockerVersion": "v1.25",
+            "loggingOptions": "",
+            "registryCredentials": {
+              "mhhdonrazorregistry": {
+                "username": "$CONTAINER_REGISTRY_USERNAME_mhhdonrazorregistry",
+                "password": "$CONTAINER_REGISTRY_PASSWORD_mhhdonrazorregistry",
+                "address": "mhhdonrazorregistry.azurecr.io"
+              }
+            }
+          }
+        },
+        "systemModules": {
+          "edgeAgent": {
+            "type": "docker",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-agent:1.0",
+              "createOptions": {}
+            }
+          },
+          "edgeHub": {
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-hub:1.0",
+              "createOptions": {
+                "HostConfig": {
+                  "PortBindings": {
+                    "5671/tcp": [
+                      {
+                        "HostPort": "5671"
+                      }
+                    ],
+                    "8883/tcp": [
+                      {
+                        "HostPort": "8883"
+                      }
+                    ],
+                    "443/tcp": [
+                      {
+                        "HostPort": "443"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "modules": {
+          "zookeeper-pubsub": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image":  "mhhdonrazorregistry.azurecr.io/amd64/thebox_zookeeper:v1",
+              "createOptions": {
+                "HostConfig": {
+                  "NetworkMode": "experiment_thebox-net",
+                  "LogConfig": {
+                    "Type": "",
+                    "Config": {}
+                  }
+                },
+                "NetworkingConfig": {
+                  "EndpointsConfig": {
+                    "experiment_thebox-net": {
+                      "Aliases": [
+                        "zookeeper-pubsub"
+                      ],
+                      "IPAMConfig": {}
+                    }
+                  }
+                },
+                "Labels": {
+                  "com.docker.compose.project": "experiment",
+                  "com.docker.compose.service": "zookeeper-pubsub",
+                  "com.docker.compose.oneoff": "False",
+                  "com.docker.compose.container-number": "1",
+                  "com.docker.compose.version": "1.24.0",
+                  "com.docker.compose.config-hash": "72a7f0deb394e8ad47b62395ab507da3ab510795015a07637d187fa0698df339"
+                }
+              }
+            }
+          },
+          "kafka-pubsub": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image":  "mhhdonrazorregistry.azurecr.io/amd64/thebox_kafka:v1",
+              "createOptions": {
+                "ExposedPorts": {
+                  "9093/tcp": {}
+                },
+                "Env": [
+                  "KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL_PLAINTEXT:PLAINTEXT,EXTERNAL_PLAINTEXT:PLAINTEXT",
+                  "KAFKA_ADVERTISED_LISTENERS=INTERNAL_PLAINTEXT://kafka-pubsub:9092,EXTERNAL_PLAINTEXT://localhost:10001",
+                  "KAFKA_LISTENERS=INTERNAL_PLAINTEXT://0.0.0.0:9092,EXTERNAL_PLAINTEXT://0.0.0.0:9093",
+                  "KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL_PLAINTEXT",
+                  "KAFKA_ZOOKEEPER_CONNECT=zookeeper-pubsub:2181",
+                  "KAFKA_CREATE_TOPICS=orchestration_inference_service:1:1,orchestration_notification_service:1:1",
+                  "KAFKA_MESSAGE_MAX_BYTES=10485760",
+                  "KAFKA_REPLICA_FETCH_MAX_BYTES=10485760"
+                ],
+                "HostConfig": {
+                  "NetworkMode": "experiment_thebox-net",
+                  "PortBindings": {
+                    "9093/tcp": [
+                      {
+                        "HostIp": "",
+                        "HostPort": "10001"
+                      }
+                    ]
+                  },
+                  "LogConfig": {
+                    "Type": "",
+                    "Config": {}
+                  }
+                },
+                "NetworkingConfig": {
+                  "EndpointsConfig": {
+                    "experiment_thebox-net": {
+                      "Aliases": [
+                        "kafka-pubsub"
+                      ],
+                      "IPAMConfig": {}
+                    }
+                  }
+                },
+                "Labels": {
+                  "com.docker.compose.project": "experiment",
+                  "com.docker.compose.service": "kafka-pubsub",
+                  "com.docker.compose.oneoff": "False",
+                  "com.docker.compose.container-number": "1",
+                  "com.docker.compose.version": "1.24.0",
+                  "com.docker.compose.config-hash": "a528366d38dab8695885f716a0c1635b8944961ebad6408a04da6d16ce66d6c2"
+                }
+              }
+            }
+          },
+          "couchdb-orch-svc": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "couchdb:latest",
+              "createOptions": {
+                "Env": [
+                  "COUCHDB_USER=testuser",
+                  "COUCHDB_PASSWORD=testpassword"
+                ],
+                "HostConfig": {
+                  "NetworkMode": "experiment_thebox-net",
+                  "LogConfig": {
+                    "Type": "",
+                    "Config": {}
+                  }
+                },
+                "NetworkingConfig": {
+                  "EndpointsConfig": {
+                    "experiment_thebox-net": {
+                      "Aliases": [
+                        "couchdb-orch-svc"
+                      ],
+                      "IPAMConfig": {}
+                    }
+                  }
+                },
+                "Labels": {
+                  "com.docker.compose.project": "experiment",
+                  "com.docker.compose.service": "couchdb-orch-svc",
+                  "com.docker.compose.oneoff": "False",
+                  "com.docker.compose.container-number": "1",
+                  "com.docker.compose.version": "1.24.0",
+                  "com.docker.compose.config-hash": "005a01f1a2afe8855ba710db4e824728dfe6c3f2844251fed27958b198ce0d78"
+                },
+                "Healthcheck": {
+                  "Test": [
+                    "CMD-SHELL",
+                    "curl -f http://couchdb-orch-svc:5984 || exit 1"
+                  ],
+                  "Interval": 30000000000,
+                  "Timeout": 10000000000,
+                  "Retries": 5,
+                  "StartPeriod": null
+                }
+              }
+            }
+          },
+          "orch-svc": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image":  "mhhdonrazorregistry.azurecr.io/amd64/thebox_orchestrator:v1",
+              "createOptions": {
+                "ExposedPorts": {
+                  "5000/tcp": {}
+                },
+                "Tty": true,
+                "OpenStdin": true,
+                "Env": [
+                  "THEBOX_STORE_COUCHDB_CONNECTION=http://couchdb-orch-svc:5984/",
+                  "THEBOX_STORE_COUCHDB_USERNAME=testuser",
+                  "THEBOX_STORE_COUCHDB_USERTOKEN=testpassword",
+                  "THEBOX_EVENTQUEUE_KAFKA_SERVER=kafka-pubsub:9092",
+                  "SERVICE_DEPENDENCIES=kafka-pubsub:9092;couchdb-orch-svc:5984"
+                ],
+                "HostConfig": {
+                  "NetworkMode": "experiment_thebox-net",
+                  "PortBindings": {
+                    "5000/tcp": [
+                      {
+                        "HostIp": "",
+                        "HostPort": "10002"
+                      }
+                    ]
+                  },
+                  "LogConfig": {
+                    "Type": "",
+                    "Config": {}
+                  }
+                },
+                "NetworkingConfig": {
+                  "EndpointsConfig": {
+                    "experiment_thebox-net": {
+                      "Aliases": [
+                        "orch-svc"
+                      ],
+                      "IPAMConfig": {}
+                    }
+                  }
+                },
+                "Labels": {
+                  "com.docker.compose.project": "experiment",
+                  "com.docker.compose.service": "orch-svc",
+                  "com.docker.compose.oneoff": "False",
+                  "com.docker.compose.container-number": "1",
+                  "com.docker.compose.version": "1.24.0",
+                  "com.docker.compose.config-hash": "c498ed1f15de71e865e81b87a6ceb287f4005c4826614cf286f8da943cffd51c"
+                }
+              }
+            }
+          },
+          "infer-svc": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image":  "mhhdonrazorregistry.azurecr.io/amd64/thebox_inference:v1",
+              "createOptions": {
+                "Tty": true,
+                "OpenStdin": true,
+                "Env": [
+                  "THEBOX_STORE_COUCHDB_CONNECTION=http://couchdb-orch-svc:5984/",
+                  "THEBOX_STORE_COUCHDB_USERNAME=testuser",
+                  "THEBOX_STORE_COUCHDB_USERTOKEN=testpassword",
+                  "THEBOX_EVENTQUEUE_KAFKA_SERVER=kafka-pubsub:9092",
+                  "SERVICE_DEPENDENCIES=kafka-pubsub:9092;couchdb-orch-svc:5984"
+                ],
+                "HostConfig": {
+                  "NetworkMode": "experiment_thebox-net",
+                  "LogConfig": {
+                    "Type": "",
+                    "Config": {}
+                  }
+                },
+                "NetworkingConfig": {
+                  "EndpointsConfig": {
+                    "experiment_thebox-net": {
+                      "Aliases": [
+                        "infer-svc"
+                      ],
+                      "IPAMConfig": {}
+                    }
+                  }
+                },
+                "Labels": {
+                  "com.docker.compose.project": "experiment",
+                  "com.docker.compose.service": "infer-svc",
+                  "com.docker.compose.oneoff": "False",
+                  "com.docker.compose.container-number": "1",
+                  "com.docker.compose.version": "1.24.0",
+                  "com.docker.compose.config-hash": "a0d0b911348962b4ddc0c2913929332fa07331cad70b457dde496182d9cfa75b"
+                }
+              }
+            }
+          },
+          "notif-svc": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image":  "mhhdonrazorregistry.azurecr.io/amd64/thebox_notification:v1",
+              "createOptions": {
+                "Tty": true,
+                "OpenStdin": true,
+                "Env": [
+                  "THEBOX_STORE_COUCHDB_CONNECTION=http://couchdb-orch-svc:5984/",
+                  "THEBOX_STORE_COUCHDB_USERNAME=testuser",
+                  "THEBOX_STORE_COUCHDB_USERTOKEN=testpassword",
+                  "THEBOX_EVENTQUEUE_KAFKA_SERVER=kafka-pubsub:9092",
+                  "SERVICE_DEPENDENCIES=kafka-pubsub:9092;couchdb-orch-svc:5984"
+                ],
+                "HostConfig": {
+                  "NetworkMode": "experiment_thebox-net",
+                  "LogConfig": {
+                    "Type": "",
+                    "Config": {}
+                  }
+                },
+                "NetworkingConfig": {
+                  "EndpointsConfig": {
+                    "experiment_thebox-net": {
+                      "Aliases": [
+                        "notif-svc"
+                      ],
+                      "IPAMConfig": {}
+                    }
+                  }
+                },
+                "Labels": {
+                  "com.docker.compose.project": "experiment",
+                  "com.docker.compose.service": "notif-svc",
+                  "com.docker.compose.oneoff": "False",
+                  "com.docker.compose.container-number": "1",
+                  "com.docker.compose.version": "1.24.0",
+                  "com.docker.compose.config-hash": "108e042ec4d4b69da27e0a6b3da1fdcff2beb4008d0bd6c1e549a0e8f147c87a"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "$edgeHub": {
+      "properties.desired": {
+        "schemaVersion": "1.0",
+        "routes": {},
+        "storeAndForwardConfiguration": {
+          "timeToLiveSecs": 7200
+        }
+      }
+    }
+  }
+}

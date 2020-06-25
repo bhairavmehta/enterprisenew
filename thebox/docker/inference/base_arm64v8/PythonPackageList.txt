@@ -1,0 +1,6 @@
+dataclasses
+jsonpickle
+pyyaml
+couchdb
+cloudant
+confluent-kafka

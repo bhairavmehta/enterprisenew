@@ -1,0 +1,23 @@
+# Windows Container version
+# To enable highlighting in VSCode, add following section in .vscode/settings.json:
+#  "files.associations": {
+#    "Dockerfile.win": "dockerfile"
+#  }
+
+FROM amd64/thebox_base:windowscore
+
+# ---- Install VCRedist (required by ONNXRuntime for OpenMP support) ----
+# See https://github.com/Microsoft/onnxruntime#system-requirements-pre-requisite-dependencies for details
+# See https://asawicki.info/news_1597_installing_visual_c_redistributable_package_from_command_line.html for quietly installing vcredist
+RUN powershell.exe -Command \
+  $ErrorActionPreference = 'Stop'; \
+  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
+  wget https://aka.ms/vs/16/release/vc_redist.x64.exe -OutFile c:\vc_redist.x64.exe ; \
+  Start-Process c:\vc_redist.x64.exe -ArgumentList '/install /passive /norestart' -Wait ; \
+  Remove-Item c:\vc_redist.x64.exe -Force
+
+# ---- Install requirements for the inference containers ----
+ARG CHECKSUM_PACKAGELIST
+COPY PythonPackageList.txt /tmp/
+RUN ["pip", "install", "-r", "c:\\tmp\\PythonPackageList.txt", "-v"]
+RUN rd /s /q c:\tmp

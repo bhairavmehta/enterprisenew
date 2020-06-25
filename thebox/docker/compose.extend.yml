@@ -1,0 +1,28 @@
+#-------------------------------------------------------------------------------------------------------------
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License. See https://go.microsoft.com/fwlink/?linkid=2090316 for license information.
+#-------------------------------------------------------------------------------------------------------------
+
+version: '3'
+services:
+  # Update this file to debug different services by not launching the service as PId=1
+  
+  infer-svc:
+    volumes:
+      - ../..:/workspace
+    # Uncomment below if the service need to be debuged
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+  orch-svc:
+    ports:
+       - 35000:5000
+    volumes:
+      - ../..:/workspace
+    # Uncomment below if the service need to be debuged
+    #command: /bin/sh -c "while sleep 1000; do :; done"
+ 
+  notif-svc:
+    volumes:
+      - ../..:/workspace
+    # Uncomment below if the service need to be debuged
+    #command: /bin/sh -c "while sleep 1000; do :; done"

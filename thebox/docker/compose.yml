@@ -1,0 +1,96 @@
+#
+# This docker-compose file is designed for running 'The Box' on dev box (x86 64) locally
+# Different from the k8s deployment, this setup does not persist data once torn down.
+# To start it, do:
+#    docker-compose -f compose.yml up -d
+# The setup exposes following ports:
+#   kafka endpoint: 10001
+#   orchestration api: 10002
+# To access the orchestration, you can use a swagger container such as this:
+#   docker run -d -p 1080:8080 --name swagger --restart always swaggerapi/swagger-ui:v2.2.9
+# and put in the url: http://localhost:10002/api/spec.json as the API url.
+
+version: "3"
+services:
+  zookeeper-pubsub:
+    image: amd64/thebox_zookeeper
+    networks:
+      - thebox-net
+  kafka-pubsub:
+    image: amd64/thebox_kafka
+    ports:
+      - "10001:9093"
+    environment:
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL_PLAINTEXT:PLAINTEXT,EXTERNAL_PLAINTEXT:PLAINTEXT
+      - KAFKA_ADVERTISED_LISTENERS=INTERNAL_PLAINTEXT://kafka-pubsub:9092,EXTERNAL_PLAINTEXT://localhost:10001
+      - KAFKA_LISTENERS=INTERNAL_PLAINTEXT://0.0.0.0:9092,EXTERNAL_PLAINTEXT://0.0.0.0:9093
+      - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL_PLAINTEXT
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper-pubsub:2181
+      - KAFKA_CREATE_TOPICS=orchestration_inference_service:1:1,orchestration_notification_service:1:1
+      - KAFKA_MESSAGE_MAX_BYTES=10485760
+      - KAFKA_REPLICA_FETCH_MAX_BYTES=10485760
+    depends_on:
+      - zookeeper-pubsub
+    networks:
+      - thebox-net
+  couchdb-orch-svc:
+    image: couchdb:latest
+    environment:
+      - COUCHDB_USER=testuser
+      - COUCHDB_PASSWORD=testpassword
+    networks:
+      - thebox-net
+    healthcheck:
+      test: curl -f http://couchdb-orch-svc:5984 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 5
+  orch-svc:
+    image: amd64/thebox_orchestrator
+    ports:
+      - 10002:5000
+    environment:
+      - THEBOX_STORE_COUCHDB_CONNECTION=http://couchdb-orch-svc:5984/
+      - THEBOX_STORE_COUCHDB_USERNAME=testuser
+      - THEBOX_STORE_COUCHDB_USERTOKEN=testpassword
+      - THEBOX_EVENTQUEUE_KAFKA_SERVER=kafka-pubsub:9092
+      - SERVICE_DEPENDENCIES=kafka-pubsub:9092;couchdb-orch-svc:5984
+    networks:
+      - thebox-net
+    stdin_open: true
+    tty: true
+    depends_on:
+      - couchdb-orch-svc
+      - kafka-pubsub
+  infer-svc:
+    image: amd64/thebox_inference
+    environment:
+      - THEBOX_STORE_COUCHDB_CONNECTION=http://couchdb-orch-svc:5984/
+      - THEBOX_STORE_COUCHDB_USERNAME=testuser
+      - THEBOX_STORE_COUCHDB_USERTOKEN=testpassword
+      - THEBOX_EVENTQUEUE_KAFKA_SERVER=kafka-pubsub:9092
+      - SERVICE_DEPENDENCIES=kafka-pubsub:9092;couchdb-orch-svc:5984
+    networks:
+      - thebox-net
+    stdin_open: true
+    tty: true
+    depends_on:
+      - couchdb-orch-svc
+      - kafka-pubsub
+  notif-svc:
+    image: amd64/thebox_notification
+    environment:
+      - THEBOX_STORE_COUCHDB_CONNECTION=http://couchdb-orch-svc:5984/
+      - THEBOX_STORE_COUCHDB_USERNAME=testuser
+      - THEBOX_STORE_COUCHDB_USERTOKEN=testpassword
+      - THEBOX_EVENTQUEUE_KAFKA_SERVER=kafka-pubsub:9092
+      - SERVICE_DEPENDENCIES=kafka-pubsub:9092;couchdb-orch-svc:5984
+    networks:
+      - thebox-net
+    stdin_open: true
+    tty: true
+    depends_on:
+      - couchdb-orch-svc
+      - kafka-pubsub
+networks:
+  thebox-net:

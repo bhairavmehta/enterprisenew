@@ -1,0 +1,23 @@
+# Windows Container version
+# To enable highlighting in VSCode, add following section in .vscode/settings.json:
+#  "files.associations": {
+#    "Dockerfile.win": "dockerfile"
+#  }
+
+FROM amd64/thebox_inference_base:windowscore
+
+# ---- Deploy the app ----
+ARG DIST_FILE_CHECKSUM
+COPY thebox_inference-latest-py3-none-any.whl /tmp/
+RUN checksum -f="/tmp/thebox_inference-latest-py3-none-any.whl" -t=sha256 -c %DIST_FILE_CHECKSUM% && \
+  pip install /tmp/thebox_inference-latest-py3-none-any.whl
+
+# ---- Copy the default config as template ----
+COPY config.default.yml /config.yml
+
+# ---- Default start command ----
+ENV SERVICE_DEPENDENCIES=
+RUN echo powershell -Command if ($null -eq $env:SERVICE_DEPENDENCIES) { foreach ($dep in $env:SERVICE_DEPENDENCIES.split(";") { Wait-For-It $dep } }; \
+  python -m thebox.inference -c c:/config.yml > /start.cmd
+
+CMD ["/start.cmd"]

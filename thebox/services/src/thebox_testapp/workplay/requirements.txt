@@ -1,0 +1,7 @@
+sklearn
+numpy
+keras
+nltk
+pandas
+image
+keras
