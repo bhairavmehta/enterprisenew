@@ -11,7 +11,7 @@ pipeline {
                 sh '''
                     echo \"Hello from \$SHELL\"
                     apt-get update
-                    apt-get install -y docker-compose docker-ce
+                    apt-get install -y docker-compose
                 '''
 
                 sh '''
