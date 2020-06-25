@@ -26,7 +26,7 @@ pipeline {
                     ls
                     cd thebox/services
                     pip install -r requirements.txt
-                    python workaround.py
+                    python3 workaround.py
                     ./build_dist.sh
                 '''
 
