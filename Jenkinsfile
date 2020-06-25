@@ -22,21 +22,9 @@ pipeline {
                     echo export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3 >> ~/.bashrc
                     echo export WORKON_HOME=\$HOME/.virtualenvs >> ~/.bashrc
                     echo export PROJECT_HOME=\$HOME/github_projects >> ~/.bashrc
-                    echo source /usr/local/bin/virtualenvwrapper.sh >> ~/.bashrc
                     source ~/.bashrc
-                    pwd
-                    cd /var/jenkins_home
                     ls
-                    mkvirtualenv thebox_dev -p ${VIRTUALENVWRAPPER_PYTHON}
-                    pwd
-                    cd /var/jenkins_home
-                    ls
-                    workon thebox_dev
-
-                    pwd
-                    cd /var/jenkins_home
-                    ls
-                    cd /repo/enterprise.mhhd/thebox/services
+                    cd thebox/services
                     pip install -r requirements.txt
                     python workaround.py
                     ./build_dist.sh
