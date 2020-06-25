@@ -19,11 +19,9 @@ pipeline {
                     pip3 install virtualenvwrapper
                     mkdir ~/github_projects
                     echo "# Python Virtualenv Settings" >> ~/.bashrc
-                    echo export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.6 >> ~/.bashrc
+                    echo export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3 >> ~/.bashrc
                     echo export WORKON_HOME=\$HOME/.virtualenvs >> ~/.bashrc
                     echo export PROJECT_HOME=\$HOME/github_projects >> ~/.bashrc
-                    echo alias python3.6=\'python3\' >> ~/.bashrc
-
 
                     echo source /usr/local/bin/virtualenvwrapper.sh >> ~/.bashrc
                     source ~/.bashrc
