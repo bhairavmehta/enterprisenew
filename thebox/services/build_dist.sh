@@ -6,4 +6,3 @@ python setup.py bdist_wheel
 python setup_orch.py bdist_wheel
 python setup_infer.py bdist_wheel
 python setup_notif.py bdist_wheel
-
