@@ -28,6 +28,9 @@ pipeline {
                     cd thebox/services
                     dos2unix build_dist.sh
 
+                    pip3 install wheel
+                    python3 setup.py bdist_wheel
+
                     cd ../docker
                     make
                 '''
