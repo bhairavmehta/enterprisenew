@@ -10,11 +10,11 @@ pipeline {
             steps {
                 sh '''
                     apt-get update
-                    apt-get add docker-compose
+                    apt-get install docker-compose
                 '''
 
                 sh '''
-                    apt-get add virtualenv python3 python3-pip
+                    apt-get install virtualenv python3 python3-pip
                     -H pip3 install virtualenvwrapper
                     mkdir ~/github_projects
                     echo "# Python Virtualenv Settings" >> ~/.bashrc
