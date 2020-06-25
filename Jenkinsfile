@@ -31,7 +31,7 @@ pipeline {
                 '''
 
                 sh '''
-                    cd /repo/
+                    cd ../docker
                     make
                 '''
             }
