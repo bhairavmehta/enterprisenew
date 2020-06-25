@@ -22,7 +22,7 @@ pipeline {
                     echo export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.6 >> ~/.bashrc
                     echo export WORKON_HOME=\$HOME/.virtualenvs >> ~/.bashrc
                     echo export PROJECT_HOME=\$HOME/github_projects >> ~/.bashrc
-                    echo source /usr/local/bin/virtualenvwrapper.sh >> ~/.bashrc
+                    echo . /usr/local/bin/virtualenvwrapper.sh >> ~/.bashrc
                     . ~/.bashrc
                     mkvirtualenv thebox_dev -p ${VIRTUALENVWRAPPER_PYTHON}'
                     workon thebox_dev
