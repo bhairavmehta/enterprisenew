@@ -24,11 +24,15 @@ pipeline {
                     echo export PROJECT_HOME=\$HOME/github_projects >> ~/.bashrc
                     echo source /usr/local/bin/virtualenvwrapper.sh >> ~/.bashrc
                     source ~/.bashrc
+                    pwd
+                    cd /var/jenkins_home
+                    ls
                     mkvirtualenv thebox_dev -p ${VIRTUALENVWRAPPER_PYTHON}
+                    pwd
+                    cd /var/jenkins_home
+                    ls
                     workon thebox_dev
-                '''
 
-                sh '''
                     pwd
                     cd /var/jenkins_home
                     ls
