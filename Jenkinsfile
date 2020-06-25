@@ -12,7 +12,7 @@ pipeline {
                     echo \"Hello from \$SHELL\"
                     apt-get update
                     apt-get install -y docker-compose
-                    apt-get install \\
+                    apt-get install -y \\
                         apt-transport-https \\
                         ca-certificates \\
                         curl \\
@@ -24,7 +24,7 @@ pipeline {
                        $(lsb_release -cs) \\
                        stable"
                     apt-get update
-                    apt-get install docker-ce docker-ce-cli containerd.io
+                    apt-get install -y docker-ce docker-ce-cli containerd.io
                 '''
 
                 sh '''
