@@ -12,7 +12,11 @@ pipeline {
                     echo \"Hello from \$SHELL\"
                     apt-get update
                     apt-get install -y docker-compose
-                    apt-get install python3.6
+                    apt install software-properties-common
+                    add-apt-repository ppa:deadsnakes/ppa
+                    apt update
+                    apt install python3.6
+                    apt install python3-pip
                 '''
 
                 sh '''
