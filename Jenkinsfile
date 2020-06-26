@@ -26,6 +26,8 @@ pipeline {
                        stable" && \
                     apt-get update && \
                     apt-get -y install docker-ce
+                    systemctl start docker
+                    docker ps
                 '''
 
                 sh '''
