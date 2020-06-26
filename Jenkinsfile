@@ -13,7 +13,7 @@ pipeline {
                     apt-get update
                     apt-get install -y docker-compose
 
-                    echo export DOCKER_HOST=docker-dind:2376 >> ~/.bashrc
+                    echo export DOCKER_HOST=tcp://docker:2376 >> ~/.bashrc
                     echo export DOCKER_TLS_CERTDIR=\'\' >> ~/.bashrc
                     source ~/.bashrc
 
