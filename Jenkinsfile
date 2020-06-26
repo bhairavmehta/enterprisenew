@@ -14,8 +14,8 @@ pipeline {
                     apt-get install -y docker-compose
 
                     cd /tmp/
-                    && curl -sSL -O https://download.docker.com/linux/static/stable/x86_64/${docker-17.06.2-ce.tgz} 92 \
-                    && tar zxf ${docker-17.06.2-ce.tgz} \
+                    && curl -sSL -O https://download.docker.com/linux/static/stable/x86_64/docker-17.06.2-ce.tgz 92 \
+                    && tar zxf docker-17.06.2-ce.tgz \
                     && mkdir -p /usr/local/bin \
                     && mv ./docker/docker /usr/local/bin \
                     && chmod +x /usr/local/bin/docker \
