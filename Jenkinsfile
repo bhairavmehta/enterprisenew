@@ -12,7 +12,6 @@ pipeline {
                     echo \"Hello from \$SHELL\"
                     apt-get update
                     apt-get install -y docker-compose
-                    apt-get update && \
                     apt-get -y install apt-transport-https \
                          ca-certificates \
                          curl \
