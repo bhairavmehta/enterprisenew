@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'node'
-            args '-u root'
+            args '-u root --network jenkins --env DOCKER_HOST=tcp://docker:2376 --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 -v /var/jenkins_home:/var/jenkins_home -v /certs/client:/certs/client:ro -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
     stages {
