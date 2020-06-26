@@ -13,7 +13,6 @@ pipeline {
                     apt-get update
                     apt-get install -y docker-compose
 
-                    docker ps
                     cd /tmp \
                     && curl -sSL -O https://download.docker.com/linux/static/stable/x86_64/docker-17.06.2-ce.tgz \
                     && tar zxf docker-17.06.2-ce.tgz \
