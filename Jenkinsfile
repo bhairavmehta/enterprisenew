@@ -12,6 +12,10 @@ pipeline {
                     echo \"Hello from \$SHELL\"
                     apt-get update
                     apt-get install -y docker-compose
+
+                    echo export DOCKER_HOST=jenkins-docker >> ~/.bashrc
+                    source ~/.bashrc
+
                     apt-get -y install apt-transport-https \
                          ca-certificates \
                          curl \
