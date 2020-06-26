@@ -13,10 +13,6 @@ pipeline {
                     apt-get update
                     apt-get install -y docker-compose
 
-                    echo export DOCKER_HOST=tcp://docker:2376 >> ~/.bashrc
-                    echo export DOCKER_TLS_CERTDIR=\'\' >> ~/.bashrc
-                    source ~/.bashrc
-
                     apt-get -y install apt-transport-https \
                          ca-certificates \
                          curl \
