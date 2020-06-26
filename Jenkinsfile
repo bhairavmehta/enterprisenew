@@ -14,8 +14,9 @@ pipeline {
                     apt-get install -y docker-compose
 
                     echo export DOCKER_HOST=docker-dind:2376 >> ~/.bashrc
-                    echo export DOCKER_TLS_CERTDIR:\'\' >> ~/.bashrc
+                    echo export DOCKER_TLS_CERTDIR=\'\' >> ~/.bashrc
                     source ~/.bashrc
+                    docker ps
 
                     apt-get -y install apt-transport-https \
                          ca-certificates \
