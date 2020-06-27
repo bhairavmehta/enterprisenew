@@ -46,7 +46,20 @@ pipeline {
                     make
                 '''
 
+                 sh '''
+
+                 '''
             }
         }
+        stage('Test') {
+            steps {
+                sh '''
+                    docker-compose -f compose.yml up -d
+                    sleep 10
+                    docker ps -a
+                    docker-compose -f compose.yml down
+                '''
+        }
+
     }
 }
