@@ -41,7 +41,6 @@ pipeline {
                     cd thebox/services
                     dos2unix build_dist.sh
                     pip install -r requirements.txt
-                    python3 workaround.py
 
                     pip install wheel
                     python setup.py bdist_wheel
