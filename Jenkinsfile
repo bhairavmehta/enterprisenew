@@ -5,9 +5,7 @@ pipeline {
             steps {
                 sh '''
                     echo \"Hello from \$SHELL\"
-                    apt-get update
-                    apt-get install -y docker-compose
-
+                    ls /tmp
                     apt-get -y install apt-transport-https \
                          ca-certificates \
                          curl \
@@ -20,8 +18,9 @@ pipeline {
                        stable" && \
                     apt-get update && \
                     apt-get -y install docker-ce
-
                     docker ps
+
+                    apt-get install -y docker-compose
                 '''
 
                 sh '''
