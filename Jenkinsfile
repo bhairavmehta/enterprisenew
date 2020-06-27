@@ -18,15 +18,13 @@ pipeline {
                        stable" && \
                     apt-get update && \
                     apt-get -y install docker-ce
-                    docker ps
-
                     apt-get install -y docker-compose
                 '''
 
                 sh '''
                     apt-get install -y virtualenv python3 python3-pip
                     pip3 install virtualenvwrapper
-                    mkdir ~/github_projects
+
                     echo "# Python Virtualenv Settings" >> ~/.bashrc
                     echo export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3 >> ~/.bashrc
                     echo export WORKON_HOME=\$HOME/.virtualenvs >> ~/.bashrc
@@ -34,8 +32,10 @@ pipeline {
                     source ~/.bashrc
                     mkvirtualenv thebox_dev -p ${VIRTUALENVWRAPPER_PYTHON}
                     workon thebox_dev
+
                     pip install -r requirements.txt
                     python workaround.py
+
                     apt-get install -y dos2unix
                     cd thebox/services
                     dos2unix build_dist.sh
