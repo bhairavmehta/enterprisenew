@@ -32,10 +32,8 @@ pipeline {
                     echo export WORKON_HOME=~/.virtualenvs >> ~/.bashrc
                     echo export PROJECT_HOME=~/github_projects >> ~/.bashrc
                     echo source /usr/local/bin/virtualenvwrapper.sh >> ~/.bashrc
+                    echo mkvirtualenv thebox_dev -p ${VIRTUALENVWRAPPER_PYTHON} >> ~/.bashrc
                     source ~/.bashrc
-
-                    source /usr/local/bin/virtualenvwrapper.sh
-                    mkvirtualenv thebox_dev -p ${VIRTUALENVWRAPPER_PYTHON}
 
                     pip install -r requirements.txt
                     python workaround.py
