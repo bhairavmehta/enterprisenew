@@ -35,7 +35,6 @@ pipeline {
                     source ~/.bashrc
 
                     mkvirtualenv thebox_dev -p ${VIRTUALENVWRAPPER_PYTHON}
-                    workon thebox_dev
 
                     pip install -r requirements.txt
                     python workaround.py
