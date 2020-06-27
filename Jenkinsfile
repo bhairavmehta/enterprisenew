@@ -34,6 +34,7 @@ pipeline {
                     echo source /usr/local/bin/virtualenvwrapper.sh >> ~/.bashrc
                     source ~/.bashrc
 
+                    source /usr/local/bin/virtualenvwrapper.sh
                     mkvirtualenv thebox_dev -p ${VIRTUALENVWRAPPER_PYTHON}
 
                     pip install -r requirements.txt
