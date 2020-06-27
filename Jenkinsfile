@@ -35,13 +35,13 @@ pipeline {
                     source ~/.bashrc
 
                     mkvirtualenv thebox_dev -p ${VIRTUALENVWRAPPER_PYTHON} || true
-
-                    pip install -r requirements.txt
-                    python workaround.py
+                    workon thebox_dev
 
                     apt-get install -y dos2unix
                     cd thebox/services
                     dos2unix build_dist.sh
+                    pip install -r requirements.txt
+                    python workaround.py
 
                     pip3 install wheel
                     python3 setup.py bdist_wheel
