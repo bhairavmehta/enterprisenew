@@ -41,10 +41,10 @@ pipeline {
                     cd thebox/services
                     dos2unix build_dist.sh
                     pip install -r requirements.txt
-                    python workaround.py
+                    python3 workaround.py
 
-                    pip3 install wheel
-                    python3 setup.py bdist_wheel
+                    pip install wheel
+                    python setup.py bdist_wheel
 
                     cd ../docker
                     make
