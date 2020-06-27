@@ -42,9 +42,6 @@ pipeline {
                     dos2unix build_dist.sh
                     pip install -r requirements.txt
 
-                    pip install wheel
-                    python setup.py bdist_wheel
-
                     cd ../docker
                     make
                 '''
