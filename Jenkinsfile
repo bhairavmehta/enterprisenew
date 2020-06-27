@@ -35,7 +35,7 @@ pipeline {
                     source ~/.bashrc
 
                     mkvirtualenv thebox_dev -p ${VIRTUALENVWRAPPER_PYTHON} || true
-                    workon thebox_dev
+                    workon thebox_dev || true
 
                     apt-get install -y dos2unix
                     cd thebox/services
