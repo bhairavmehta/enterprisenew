@@ -60,6 +60,7 @@ pipeline {
                     docker ps -a
                     docker-compose -f compose.yml down
                 '''
+            }
         }
     }
 }
