@@ -19,6 +19,7 @@ pipeline {
                     apt-get update && \
                     apt-get -y install docker-ce
                     apt-get install -y docker-compose
+                    docker-compose --version
                 '''
 
                 sh '''
