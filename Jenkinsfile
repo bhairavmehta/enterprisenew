@@ -4,8 +4,6 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
-                    echo \"Hello from \$SHELL\"
-                    ls /tmp
                     apt-get -y install apt-transport-https \
                          ca-certificates \
                          curl \
@@ -18,17 +16,19 @@ pipeline {
                        stable" && \
                     apt-get update && \
                     apt-get -y install docker-ce
+
                     curl -L "https://github.com/docker/compose/releases/download/1.26.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
                     chmod +x /usr/local/bin/docker-compose
-                    docker-compose --version
                 '''
 
                 sh '''
                     apt-get install -y virtualenv python3 python3-pip
                     pip3 install virtualenvwrapper
+
                     mkdir -p ~/github_projects
                     rm ~/.bashrc
                     touch ~/.bashrc
+
                     echo "# Python Virtualenv Settings" >> ~/.bashrc
                     echo export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3 >> ~/.bashrc
                     echo export WORKON_HOME=~/.virtualenvs >> ~/.bashrc
@@ -59,7 +59,7 @@ pipeline {
                 sh '''
                     cd thebox/docker
                     docker-compose -f compose.yml up -d
-                    sleep 10
+                    sleep 20
                     docker ps -a
                     docker-compose -f compose.yml down
                 '''
