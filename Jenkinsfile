@@ -51,6 +51,7 @@ pipeline {
                  '''
             }
         }
+
         stage('Test') {
             steps {
                 sh '''
@@ -60,6 +61,5 @@ pipeline {
                     docker-compose -f compose.yml down
                 '''
         }
-
     }
 }
