@@ -55,6 +55,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh '''
+                    cd thebox/docker
                     docker-compose -f compose.yml up -d
                     sleep 10
                     docker ps -a
