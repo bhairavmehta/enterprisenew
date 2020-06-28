@@ -4,6 +4,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
+                    apt-get update
                     apt-get -y install apt-transport-https \
                          ca-certificates \
                          curl \
