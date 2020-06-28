@@ -60,7 +60,7 @@ pipeline {
                     source ~/.bashrc
                     workon thebox_dev || true
                     export PYTHONPATH=`pwd`/src
-                    cd src/thebox_testapp/workplay
+                    cd src/thebox_testapp/keystrokes
                     pip3 install -r requirements.txt
                     python3 notif_app.py -s localhost:10001
 
