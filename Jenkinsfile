@@ -60,9 +60,6 @@ pipeline {
                 sh '''
                     cd thebox/docker
                     docker-compose -f compose.yml up -d
-                    sleep 20
-                    docker ps -a
-                    docker-compose -f compose.yml down
                 '''
             }
         }
