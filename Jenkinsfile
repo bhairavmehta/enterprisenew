@@ -61,8 +61,8 @@ pipeline {
                     workon thebox_dev || true
                     export PYTHONPATH=`pwd`/src
                     cd src/thebox_testapp/workplay
-                    pip install -r requirements.txt
-                    python notif_app.py -s localhost:10001
+                    pip3 install -r requirements.txt
+                    python3 notif_app.py -s localhost:10001
 
                 '''
             }
