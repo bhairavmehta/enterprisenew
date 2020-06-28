@@ -47,10 +47,6 @@ pipeline {
                     cd ../docker
                     make
                 '''
-
-                 sh '''
-
-                 '''
             }
         }
 
@@ -59,9 +55,12 @@ pipeline {
                 sh '''
                     cd thebox/docker
                     docker-compose -f compose.yml up -d
-                    sleep 20
-                    docker ps -a
-                    docker-compose -f compose.yml down
+                    docker run -d -p 1080:8080 --name swagger --restart always swaggerapi/swagger-ui:v2.2.9
+                    export PYTHONPATH=${pwd}/src
+                    cd src/thebox_testapp/workplay
+                    pip install -r requirements.txt
+                    python notif_app.py -s localhost:10001 
+
                 '''
             }
         }
