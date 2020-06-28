@@ -61,7 +61,6 @@ pipeline {
                     workon thebox_dev || true
                     export PYTHONPATH=`pwd`/src
                     cd src/thebox_testapp/keyStrokes
-                    pip3 install -r requirements.txt
                     python3 ksNotify_app.py -s localhost:10001
 
                 '''
