@@ -47,6 +47,10 @@ pipeline {
                     cd ../docker
                     make
                 '''
+
+                 sh '''
+
+                 '''
             }
         }
 
@@ -55,14 +59,9 @@ pipeline {
                 sh '''
                     cd thebox/docker
                     docker-compose -f compose.yml up -d
-                    docker run -d -p 1080:8080 --name swagger --restart always swaggerapi/swagger-ui:v2.2.9 || true
-                    cd ../services
-                    source ~/.bashrc
-                    workon thebox_dev || true
-                    export PYTHONPATH=`pwd`/src
-                    cd src/thebox_testapp/keyStrokes
-                    python3 ksNotify_app.py -s localhost:10001
-
+                    sleep 20
+                    docker ps -a
+                    docker-compose -f compose.yml down
                 '''
             }
         }
