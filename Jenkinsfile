@@ -59,7 +59,12 @@ pipeline {
             steps {
                 sh '''
                     cd thebox/docker
-
+                    docker-compose -f compose.yml up -d
+                    cd ../services
+                    export PYTHONPATH=$(pwd)/src
+                    cd src/thebox_testapp/keyStrokes
+                    python3 ksNotify_app.py -s localhost:10001
+                    docker-compose -f compose.yml down
                 '''
             }
         }
