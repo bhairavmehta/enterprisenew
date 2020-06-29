@@ -59,7 +59,7 @@ pipeline {
             steps {
                 sh '''
                     cd thebox/docker
-                    docker-compose -f compose.yml up -d
+
                 '''
             }
         }

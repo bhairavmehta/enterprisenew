@@ -65,7 +65,6 @@ git commit -m "nits"
 docker container run ^
   --name jenkins ^
   --detach ^
-  --rm ^
   -u root ^
   --network jenkins ^
   --env DOCKER_HOST=tcp://docker:2376 ^
