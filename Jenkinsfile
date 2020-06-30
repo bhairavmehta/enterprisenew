@@ -36,6 +36,7 @@ pipeline {
                         docker save -o /tmp/images/zookeeper.tar amd64/thebox_zookeeper
                         docker save -o /tmp/images/couchdb.tar couchdb
 
+                        ssh ${USER}@${IP} mkdir ${TMP} || true
                         ssh ${USER}@${IP} mkdir ${PROD} || true
 
                         scp compose.yml ${USER}@${IP}:${TMP}
