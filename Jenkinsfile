@@ -4,6 +4,8 @@ pipeline {
     environment {
         USER = 'ivan'
         IP   = '192.168.1.11'
+        TMP  = 'C:\\Temp\\images'
+        PROD = 'C:\\Production'
     }
 
     stages {
@@ -25,7 +27,7 @@ pipeline {
             steps {
                 sshagent(credentials : ['1ef423a1-271d-493c-a0ab-b4203dc005ee']) {
                     sh '''
-                        ssh ${USER}@${IP} mkdir -p  C:\\Temp\\images
+                        ssh ${USER}@${IP} mkdir -p ${TMP}
                         cd thebox/docker
                         mkdir -p /tmp/images
                         docker save -o /tmp/images/notif.tar amd64/thebox_notification
@@ -35,23 +37,23 @@ pipeline {
                         docker save -o /tmp/images/zookeeper.tar amd64/thebox_zookeeper
                         docker save -o /tmp/images/couchdb.tar couchdb
 
-                        ssh ${USER}@${IP} mkdir -p  C:\\Temp\\images
-                        ssh ${USER}@${IP} mkdir -p  C:/Production
+                        ssh ${USER}@${IP} mkdir -p ${TMP}
+                        ssh ${USER}@${IP} mkdir -p ${PROD}
 
-                        scp compose.yml ${USER}@${IP}:C:/Temp/images
-                        scp -r /tmp/images ${USER}@${IP}:C:/Temp/images
-                        scp -r ../services/src ${USER}@${IP}:C:/Production
+                        scp compose.yml ${USER}@${IP}:${TMP}
+                        scp -r /tmp/images ${USER}@${IP}:${TMP}
+                        scp -r ../services/src ${USER}@${IP}:${PROD}
 
-                        ssh ${USER}@${IP} docker load -i C:/Temp/images/notif.tar
-                        ssh ${USER}@${IP} docker load -i C:/Temp/images/inf.tar
-                        ssh ${USER}@${IP} docker load -i C:/Temp/images/orch.tar
-                        ssh ${USER}@${IP} docker load -i C:/Temp/images/kafka.tar
-                        ssh ${USER}@${IP} docker load -i C:/Temp/images/zookeeper.tar
-                        ssh ${USER}@${IP} docker load -i C:/Temp/images/couchdb.tar
+                        ssh ${USER}@${IP} docker load -i ${TMP}\\notif.tar
+                        ssh ${USER}@${IP} docker load -i ${TMP}\\inf.tar
+                        ssh ${USER}@${IP} docker load -i ${TMP}\\orch.tar
+                        ssh ${USER}@${IP} docker load -i ${TMP}\\kafka.tar
+                        ssh ${USER}@${IP} docker load -i ${TMP}\\zookeeper.tar
+                        ssh ${USER}@${IP} docker load -i ${TMP}\\couchdb.tar
 
-                        ssh ${USER}@${IP} rm -r C:/Temp/images
+                        ssh ${USER}@${IP} rm -r ${TMP}
 
-                        ssh ${USER}@${IP} docker-compose -f C:/Temp/images/compose.yml up -d
+                        ssh ${USER}@${IP} docker-compose -f ${TMP}\\compose.yml up -d
                     '''
                 }
             }
