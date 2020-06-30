@@ -89,3 +89,7 @@ docker container run --name jenkins-docker --rm --detach ^
                     export PYTHONPATH=$(pwd)/src
                     cd src/thebox_testapp/keyStrokes
                     python3 ksNotify_app.py -s localhost:10001
+
+https://winscp.net/eng/docs/guide_windows_openssh_server
+https://winscp.net/download/WinSCP-5.17.6-Setup.exe
+https://medium.com/rkttu/set-up-your-ssh-server-in-windows-10-native-way-1aab9021c3a6
