@@ -97,7 +97,7 @@ pipeline {
                         ssh ${USER}@${IP} docker load -i ${IMAGES}couchdb.tar
 
                         ssh ${USER}@${IP} docker-compose -f ${TMP}/compose.yml up -d
-                        ssh ${USER}@${IP} rm -r ${TMP}
+                        ssh ${USER}@${IP} rm -r ${IMAGES}
                     '''
                 }
             }
