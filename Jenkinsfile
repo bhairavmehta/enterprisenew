@@ -28,7 +28,7 @@ pipeline {
                 sshagent(credentials : ['1ef423a1-271d-493c-a0ab-b4203dc005ee']) {
                     sh '''
                         cd thebox/docker
-                        mkdir /tmp/images
+                        mkdir -p /tmp/images
                         docker save -o /tmp/images/notif.tar amd64/thebox_notification
                         docker save -o /tmp/images/inf.tar amd64/thebox_inference
                         docker save -o /tmp/images/orch.tar amd64/thebox_orchestrator
