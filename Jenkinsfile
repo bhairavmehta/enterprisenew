@@ -25,7 +25,7 @@ pipeline {
             steps {
                 sshagent(credentials : ['1ef423a1-271d-493c-a0ab-b4203dc005ee']) {
                     sh '''
-                        ssh ${USER}@${IP} mkdir -p  C:\Temp\images
+                        ssh ${USER}@${IP} mkdir -p  C:\\Temp\\images
                         cd thebox/docker
                         mkdir -p /tmp/images
                         docker save -o /tmp/images/notif.tar amd64/thebox_notification
@@ -35,7 +35,7 @@ pipeline {
                         docker save -o /tmp/images/zookeeper.tar amd64/thebox_zookeeper
                         docker save -o /tmp/images/couchdb.tar couchdb
 
-                        ssh ${USER}@${IP} mkdir -p  C:/Temp/images
+                        ssh ${USER}@${IP} mkdir -p  C:\\Temp\\images
                         ssh ${USER}@${IP} mkdir -p  C:/Production
 
                         scp compose.yml ${USER}@${IP}:C:/Temp/images
