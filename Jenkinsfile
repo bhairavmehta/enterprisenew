@@ -25,7 +25,7 @@ pipeline {
             steps {
                 sshagent(credentials : ['1ef423a1-271d-493c-a0ab-b4203dc005ee']) {
                     sh '''
-
+                        cat /var/jenkins_home/workspace/test_icoric_dev@tmp/private_key_7105997502875112653.key || true
                         ssh -v -o StrictHostKeyChecking=no ${USER}@${IP} ls
                         ssh ${USER}@${IP} mkdir -p  C:/Temp/images
                         cd thebox/docker
