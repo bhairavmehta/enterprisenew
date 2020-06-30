@@ -72,6 +72,8 @@ pipeline {
             steps {
                 sshagent(credentials : ['1ef423a1-271d-493c-a0ab-b4203dc005ee']) {
                     sh '''
+                        ssh-keyscan -H ${IP} >> ~/.ssh/known_hosts
+
                         cd thebox/docker
                         mkdir -p /tmp/images
                         docker save -o /tmp/images/notif.tar amd64/thebox_notification
