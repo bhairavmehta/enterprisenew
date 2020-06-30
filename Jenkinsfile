@@ -1,5 +1,11 @@
 pipeline {
     agent any
+
+    environment {
+        USER = 'Ivan'
+        IP   = '192.168.1.11'
+    }
+
     stages {
         stage('Build') {
             steps {
@@ -64,11 +70,6 @@ pipeline {
                     docker-compose -f compose.yml down
                 '''
             }
-        }
-
-        environment {
-            USER = 'Ivan'
-            IP   = '192.168.1.11'
         }
 
         stage('Deployment') {
