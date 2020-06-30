@@ -81,8 +81,8 @@ pipeline {
                     docker save -o /tmp/images/inf.tar amd64/thebox_inference
                     docker save -o /tmp/images/orch.tar amd64/thebox_orchestrator
                     docker save -o /tmp/images/kafka.tar amd64/thebox_kafka
-                    docker save -o /tmp/images/zookeeper.tar amd64/amd64/thebox_zookeeper
-                    docker save -o /tmp/images/couchdb.tar amd64/amd64/couchdb
+                    docker save -o /tmp/images/zookeeper.tar amd64/thebox_zookeeper
+                    docker save -o /tmp/images/couchdb.tar amd64/couchdb
 
                     ssh ${USER}@${IP} mkdir -p  C:\\Temp\\images
                     ssh ${USER}@${IP} mkdir -p  C:\\Production
