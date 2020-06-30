@@ -60,7 +60,46 @@ pipeline {
                 sh '''
                     cd thebox/docker
                     docker-compose -f compose.yml up -d
+                    docker ps -a
                     docker-compose -f compose.yml down
+                '''
+            }
+        }
+
+        environment {
+            USER = 'Ivan'
+            IP   = '192.168.1.11'
+        }
+
+        stage('Deployment') {
+            steps {
+                sh '''
+                    cd thebox/docker
+                    mkdir -p /tmp/images
+                    docker save -o /tmp/images/notif.tar amd64/thebox_notification
+                    docker save -o /tmp/images/inf.tar amd64/thebox_inference
+                    docker save -o /tmp/images/orch.tar amd64/thebox_orchestrator
+                    docker save -o /tmp/images/kafka.tar amd64/thebox_kafka
+                    docker save -o /tmp/images/zookeeper.tar amd64/amd64/thebox_zookeeper
+                    docker save -o /tmp/images/couchdb.tar amd64/amd64/couchdb
+
+                    ssh ${USER}@${IP} mkdir -p  C:\\Temp\\images
+                    ssh ${USER}@${IP} mkdir -p  C:\\Production
+
+                    scp compose.yml ${USER}@${IP}:C:\\Temp\\images
+                    scp -r /tmp/images ${USER}@${IP}:C:\\Temp\\images
+                    scp -r ../services/src ${USER}@${IP}:C:\\Production
+
+                    ssh ${USER}@${IP} docker load -i C:\\Temp\\images\\notif.tar
+                    ssh ${USER}@${IP} docker load -i C:\\Temp\\images\\inf.tar
+                    ssh ${USER}@${IP} docker load -i C:\\Temp\\images\\orch.tar
+                    ssh ${USER}@${IP} docker load -i C:\\Temp\\images\\kafka.tar
+                    ssh ${USER}@${IP} docker load -i C:\\Temp\\images\\zookeeper.tar
+                    ssh ${USER}@${IP} docker load -i C:\\Temp\\images\\couchdb.tar
+
+                    ssh ${USER}@${IP} rm -r C:\\Temp\\images
+
+                    ssh ${USER}@${IP} docker-compose -f C:\\Temp\\images\\compose.yml up -d
                 '''
             }
         }

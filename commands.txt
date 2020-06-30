@@ -65,14 +65,27 @@ git commit -m "nits"
 docker container run ^
   --name jenkins ^
   --detach ^
+  --rm ^
   -u root ^
   --network jenkins ^
   --env DOCKER_HOST=tcp://docker:2376 ^
   --env DOCKER_CERT_PATH=/certs/client ^
   --env DOCKER_TLS_VERIFY=1 ^
-  --publish 8080:8080 ^
+  --publish 8081:8080 ^
   --publish 50000:50000 ^
   --volume jenkins-data:/var/jenkins_home ^
   --volume jenkins-docker-certs:/certs/client:ro ^
   -v /var/run/docker.sock:/var/run/docker.sock ^
   jenkins/jenkins:lts
+
+docker container run --name jenkins-docker --rm --detach ^
+  --privileged --network jenkins --network-alias docker ^
+  --env DOCKER_TLS_CERTDIR=/certs ^
+  --volume jenkins-docker-certs:/certs/client ^
+  --volume jenkins-data:/var/jenkins_home ^
+  --publish 2376:2376 docker:dind
+
+                    cd ../services
+                    export PYTHONPATH=$(pwd)/src
+                    cd src/thebox_testapp/keyStrokes
+                    python3 ksNotify_app.py -s localhost:10001
