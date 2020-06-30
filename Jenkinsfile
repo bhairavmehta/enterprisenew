@@ -26,7 +26,7 @@ pipeline {
                 sshagent(credentials : ['1ef423a1-271d-493c-a0ab-b4203dc005ee']) {
                     sh '''
 
-                        ssh -A ${USER}@${IP} ls
+                        ssh ${USER}@${IP} ls
 
                         ssh ${USER}@${IP} mkdir -p  C:/Temp/images
                         cd thebox/docker
