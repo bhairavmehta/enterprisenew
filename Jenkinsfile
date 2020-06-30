@@ -40,7 +40,7 @@ pipeline {
                         ssh ${USER}@${IP} mkdir ${PROD} || true
 
                         scp compose.yml ${USER}@${IP}:${TMP}
-                        scp -r /tmp/images/ ${USER}@${IP}:${TMP}
+                        scp -r /tmp/images ${USER}@${IP}:${TMP}
                         scp -r ../services/src ${USER}@${IP}:${PROD}
 
                         ssh ${USER}@${IP} docker load -i ${TMP}\\images\\notif.tar
