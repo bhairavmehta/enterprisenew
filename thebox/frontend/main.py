@@ -9,33 +9,18 @@ app = Flask(__name__)
 images_path = '../static/images'
 
 
-@app.route("/")
+@app.route("/", methods=['GET'])
 def home():
-    return render_template("home.html",)
+    return render_template("home.html")
 
 
-@app.route("/forward/", methods=['POST'])
-def move_forward():
-    forward_message = "Moving Forward..."
-    return render_template('home.html', forward_message=forward_message);
+@app.route('/', methods=['POST'])
+def my_form_post():
+    text = request.form['search']
+    processed_text = text.lower()
+    data = 'me' if np.random.random() < 0.5 else 'notme'
 
-
-# @app.route("/about")
-# def about():
-#     return render_template("about.html")
-
-
-# @app.route("/", methods=['POST', 'GET'])
-# def myfunc():
-#
-#     new_graph_name = "graph" + str(time.time()) + ".png"
-#
-#     me = send_from_directory(os.path.abspath(images_path),
-#                              'me.png')
-#     not_me = send_from_directory(os.path.abspath(images_path),
-#                                  'notme.png')
-#
-#     return render_template("home.html", graph=new_graph_name)
+    return render_template("home.html", data=data)
 
 
 if __name__ == "__main__":

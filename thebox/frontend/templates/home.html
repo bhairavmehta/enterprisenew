@@ -6,7 +6,19 @@
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
   </head>
 
-  <body>
+  <body onload="determineVisibility">
+
+    <script>
+      function determineVisibility() {
+        alert(data)
+        if (true) {
+          document.getElementById("result").hidden = true
+        } else {
+          document.getElementById("result").hidden = false
+        }
+      }
+    </script>
+
     <header>
       <div class="container">
         <h1 class="logo">KeyStroke Demo</h1>
@@ -25,32 +37,17 @@
     <section>
       <p class="section-head">Search</p>
       <div>
-        <form>
-          <input id="search" placeholder="www.facebook.com">
-          <a href=# id=test><button id="train">Search</button> </a>
+        <form method="POST" onsubmit="myFunction()">
+          <input id="search" name="search" placeholder="www.facebook.com">
+          <input id="submit" type="submit">
         </form>
       </div>
     </section>
 
-    <section>
+    <section id="result">
       <p class="section-head">Result</p>
-
-      <img src="/static/images/notme.jpg" />
+      <img src="/static/images/{{data}}.jpg"/>
     </section>
-
-
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script type=text/javascript>
-          $(function() {
-            $('a#test').bind('click', function() {
-              $.getJSON('/background_process_test',
-                  function(data) {
-                //do nothing
-              });
-              return false;
-            });
-          });
-  </script>
 
   </body>
 </html>
