@@ -58,14 +58,11 @@ class TelemetryClient():
         #print(f"Message sent! {msg}")
 
 
-            
-
-
-
 def replaceMultipleChar(st,charsList,newSt):
         for oldChar in charsList:
                 st=st.replace(oldChar,newSt)
         return st
+
 
 def generateOriginalText(filename):
         

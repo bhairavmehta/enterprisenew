@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/template.css') }}">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+  </head>
+
+  <body onload="determineVisibility()">
+
+    <script>
+      function determineVisibility() {
+        if (document.getElementById("img").src.endsWith("/.jpg")) {
+          document.getElementById("result").hidden = true
+        } else {
+          document.getElementById("result").hidden = false
+        }
+      }
+    </script>
+
+    <header>
+      <div class="container">
+        <h1 class="logo">KeyStroke Demo</h1>
+      </div>
+    </header>
+<!--    <h1>Hello {{name}}</h1>-->
+
+    <section>
+      <p class="section-head">Description</p>
+      <p>
+        This is an example of the model which tracks each struck of a key and it guesses the user.
+      </p>
+      <p>To use it, pretend that you are writing something in the search bar below.</p>
+    </section>
+
+    <section>
+      <p class="section-head">Search</p>
+      <div>
+        <form method="POST" onsubmit="myFunction()">
+          <input id="search" name="search" placeholder="www.facebook.com">
+          <input id="submit" type="submit">
+        </form>
+      </div>
+    </section>
+
+    <section id="result" hidden>
+      <p class="section-head">Result</p>
+      <img id="img" src="/static/images/{{data}}.jpg"/>
+    </section>
+
+  </body>
+</html>
