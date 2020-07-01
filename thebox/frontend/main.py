@@ -13,6 +13,25 @@ images_path = '../static/images'
 def home():
     return render_template("home.html")
 
+@app.route("/demos/work-play", methods=['GET'])
+def work_play():
+    return render_template("home.html")
+
+
+@app.route("/demos/anomaly-detection", methods=['GET'])
+def anomaly_detection():
+    return render_template("home.html")
+
+
+@app.route("/demos/peek-over-shoulder", methods=['GET'])
+def peek_over_shoulder():
+    return render_template("home.html")
+
+
+@app.route("/demos/let-me-work", methods=['GET'])
+def let_me_work():
+    return render_template("home.html")
+
 
 @app.route("/demos/key-strokes", methods=['GET'])
 def key_strokes():
