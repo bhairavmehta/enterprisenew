@@ -86,7 +86,6 @@ pipeline {
                         docker save -o /tmp/images/orch.tar amd64/thebox_orchestrator
                         docker save -o /tmp/images/kafka.tar amd64/thebox_kafka
                         docker save -o /tmp/images/zookeeper.tar amd64/thebox_zookeeper
-                        docker save -o /tmp/images/couchdb.tar couchdb
                         docker save -o /tmp/images/demo.tar thebox/demo
 
                         ssh ${USER}@${IP} mkdir ${TMP} || true
@@ -102,7 +101,6 @@ pipeline {
                         ssh ${USER}@${IP} docker load -i ${IMAGES}orch.tar
                         ssh ${USER}@${IP} docker load -i ${IMAGES}kafka.tar
                         ssh ${USER}@${IP} docker load -i ${IMAGES}zookeeper.tar
-                        ssh ${USER}@${IP} docker load -i ${IMAGES}couchdb.tar
                         ssh ${USER}@${IP} docker load -i ${IMAGES}demo.tar
 
                         ssh ${USER}@${IP} docker run -dit --restart always --name onnx_server -p 8082:80 -v "${MODEL_PATH}":/usr/local/apache2/htdocs/ httpd:2.4
