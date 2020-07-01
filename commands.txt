@@ -92,4 +92,10 @@ docker container run --name jenkins-docker --rm --detach ^
 
 https://winscp.net/eng/docs/guide_windows_openssh_server
 https://winscp.net/download/WinSCP-5.17.6-Setup.exe
-https://medium.com/rkttu/set-up-your-ssh-server-in-windows-10-native-way-1aab9021c3a6
+
+
+docker container run --name demo --rm -it thebox/demo bash
+
+cd keyStrokes && python3.6 ksNotify_app.py -s host.docker.internal
+python3.6 -m pip install pynput
+cd root/thebox/src/thebox_testapp/keyStrokes/

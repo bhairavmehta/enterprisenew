@@ -30,8 +30,8 @@ class TelemetryClient():
         valid_x.add(s)
         ##fi=open( 'c:\\temp\\tfidfvocabulary.pkl','rb')
         fi=open( 'tfidfvocabulary.pkl','rb')
-        print('opened fi')
-        tfidf_vect=pickle.load(fi) 
+
+        tfidf_vect=pickle.load(fi)
 
 
         xvalid_tfidf1 =  tfidf_vect.transform(valid_x)
@@ -191,7 +191,6 @@ def main():
     #  4. Launch notif_app.py first to listen to messages
     #  5. Run this program and type in a URL to try out
 
-
     pubsub_endpoint = "localhost:10001"
     topic = "in_topic_ks_infer_test"
     try:
@@ -211,7 +210,7 @@ def main():
 
     telClient = TelemetryClient(pubsub_endpoint, topic)
     
-    print(f"Connected to TheBox at endpoint: {pubsub_endpoint}:{topic}")
+    print("Connected to TheBox at endpoint: {}:{}".format(pubsub_endpoint, topic))
     print("Now imagine the date and time is somehow being provided (type 'exit' to quit)...\n")
     print("===================================================\n")
     
@@ -227,13 +226,5 @@ def main():
         else:
            
            telClient.send_telemetry(words)
-           
-            #telClient.send_telemetry(dateTime)
-    
 
 main()
-
-#f.write(format(text))
-
-#resultdf=pd.read_csv(fiename, sep=" ", header=None)
-#print(resultdf)

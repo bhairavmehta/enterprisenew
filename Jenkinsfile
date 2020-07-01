@@ -2,11 +2,12 @@ pipeline {
     agent any
 
     environment {
-        USER   = 'ivan'
-        IP     = '192.168.1.11'
-        TMP    = 'C:\\Temp\\jenkins'
-        PROD   = 'C:\\Production'
-        IMAGES = 'C:\\Temp\\jenkins\\images\\'
+        USER        = 'ivan'
+        IP          = '192.168.1.11'
+        TMP         = 'C:\\Temp\\jenkins'
+        PROD        = 'C:\\Production'
+        IMAGES      = 'C:\\Temp\\jenkins\\images\\'
+        MODEL_PATH  = 'C:\\Users\\Ivan\\Desktop\\Work\\Bhairav-Mehta'
     }
 
     stages {
@@ -54,6 +55,8 @@ pipeline {
                     dos2unix build_dist.sh
                     pip install -r requirements.txt
 
+                    docker build --no-cache -t thebox/demo .
+
                     cd ../docker
                     make
                 '''
@@ -82,6 +85,7 @@ pipeline {
                         docker save -o /tmp/images/kafka.tar amd64/thebox_kafka
                         docker save -o /tmp/images/zookeeper.tar amd64/thebox_zookeeper
                         docker save -o /tmp/images/couchdb.tar couchdb
+                        docker save -o /tmp/images/demo.tar thebox/demo
 
                         ssh ${USER}@${IP} mkdir ${TMP} || true
                         ssh ${USER}@${IP} mkdir ${PROD} || true
@@ -97,8 +101,13 @@ pipeline {
                         ssh ${USER}@${IP} docker load -i ${IMAGES}kafka.tar
                         ssh ${USER}@${IP} docker load -i ${IMAGES}zookeeper.tar
                         ssh ${USER}@${IP} docker load -i ${IMAGES}couchdb.tar
+                        ssh ${USER}@${IP} docker load -i ${IMAGES}demo.tar
+
+                        ssh ${USER}@${IP} docker run -dit --restart always --name onnx_server -p 8082:80 -v "${MODEL_PATH}":/usr/local/apache2/htdocs/ httpd:2.4
 
                         ssh ${USER}@${IP} docker-compose -f ${TMP}/compose.yml up -d
+                        ssh ${USER}@${IP} curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" -d @C:\\Production\\src\\thebox_testapp\\keyStrokes\\ksScenarion.json "http://localhost:10002/scenario"
+                        ssh ${USER}@${IP} docker container run --network host --name demo --rm -it thebox/demo python3.6 keyStrokes/ksNotify_app.py
                         ssh ${USER}@${IP} rm -r ${IMAGES}
                     '''
                 }

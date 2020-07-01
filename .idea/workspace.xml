@@ -20,13 +20,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="13dd00a5-01a8-4b19-adde-2a48ed6dfd60" name="Default Changelist" comment="Nits.">
+      <change afterPath="$PROJECT_DIR$/thebox/frontend/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thebox/frontend/static/css/template.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thebox/frontend/templates/about.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thebox/frontend/templates/home.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thebox/frontend/templates/template.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thebox/services/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thebox/services/src/thebox_testapp/keyStrokes/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/enterprise.mhhd.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/enterprise.mhhd.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/Jenkinsfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commands.txt" beforeDir="false" afterPath="$PROJECT_DIR$/commands.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thebox/services/src/thebox_testapp/keyStrokes/ksNotify_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/services/src/thebox_testapp/keyStrokes/ksNotify_app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thebox/services/src/thebox_testapp/keyStrokes/ksScenario.json" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/services/src/thebox_testapp/keyStrokes/ksScenario.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thebox/services/src/thebox_testapp/keyStrokes/ksSig_gen.py" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/services/src/thebox_testapp/keyStrokes/ksSig_gen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -38,12 +58,15 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Ivan\Desktop\Work\Bhairav-Mehta\enterprise.mhhd\thebox\services" />
       <recent name="C:\Users\Ivan\Desktop\Work\Bhairav-Mehta\enterprise.mhhd" />
     </key>
   </component>
@@ -68,6 +91,9 @@
     <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="requirements.txt" />
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -89,10 +115,14 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1659" y="502" key="#com.intellij.fileTypes.FileTypeChooser/0.0.2560.1400@0.0.2560.1400" timestamp="1593101498170" />
-    <state x="1700" y="459" key="FileChooserDialogImpl" timestamp="1589830386252">
+    <state x="1700" y="459" key="FileChooserDialogImpl" timestamp="1593550028568">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="1700" y="459" key="FileChooserDialogImpl/0.0.2560.1400@0.0.2560.1400" timestamp="1589830386252" />
+    <state x="1700" y="459" key="FileChooserDialogImpl/0.0.2560.1400@0.0.2560.1400" timestamp="1593550028568" />
+    <state x="1421" y="349" key="SettingsEditor" timestamp="1593598664323">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1421" y="349" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1593598664323" />
     <state x="1530" y="358" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1593529170012">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>

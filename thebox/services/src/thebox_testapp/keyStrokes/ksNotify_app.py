@@ -2,9 +2,9 @@ import sys
 import getopt
 from thebox.pubsub_kafka.pubsubkafka import PubSubManagerKafka, PubSubProducer, PubSubConnectionKafka
 from thebox.messages.notificationmessage import NotificationMessage
-from tkinter import *
 import threading
-from PIL import ImageTk, Image
+from PIL import Image
+
 
 def printhelp():
     help = """
@@ -12,6 +12,7 @@ Usage:
     python notif_app.py -s <server_host:server_port> -t <notification_topic>
 """
     print(help)
+
 
 class program:
 
@@ -28,7 +29,7 @@ class program:
 
         print("Starting listening for notifications ...")
 
-        while not self.terminating_thread:
+        while True:
             (t, o) = consumer.poll(1)
             if o is not None:
                 print(f"Getting message from topic t={t}:")
@@ -37,33 +38,19 @@ class program:
                 notif_callback(o.notification_id)
 
         print("Received thread termination request. Bailing out.")
-            
 
     def main(self):
 
-        # main thread will deal with window messaging
-        window = Tk()
-        window.title("My Naive Listener App")
-        window.geometry('400x400')
-
-        lbl = Label(window, text="Start monitoring what is being typed  ...") 
-        lbl.grid(column=0, row=0)
-
-        img_me = ImageTk.PhotoImage(Image.open("me.jpg"))
-        img_notMe = ImageTk.PhotoImage(Image.open("notme.jpg"))
-        
         # start side thread on listening to notification
         def handle_callback(notif_id: str):
             print(notif_id)
             if "is_not_me" in notif_id:
-                lbl.configure(text="It is not me.", image=img_notMe)
+                print("It is not me.")
             else:
-                lbl.configure(text="it is me.", image=img_me)
-        
+                print("It's me")
+
         t = threading.Thread(target=self.signal_thread, args=(handle_callback,))
         t.start()
-        
-        window.mainloop()
 
         self.terminating_thread = True
         t.join()
