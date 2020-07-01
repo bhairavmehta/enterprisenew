@@ -55,7 +55,7 @@ pipeline {
                     dos2unix build_dist.sh
                     pip install -r requirements.txt
 
-                    docker build --no-cache -t thebox/demo .
+                    docker build -t thebox/demo .
 
                     cd ../docker
                     make
