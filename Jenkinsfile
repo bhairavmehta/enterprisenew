@@ -4,7 +4,7 @@ pipeline {
     environment {
         USER        = 'ivan'
         IP          = '192.168.1.11'
-        TMP         = 'C:\\Temp\\jenkins'
+        TMP         = 'C:\\Temp\\thebox'
         PROD        = 'C:\\Production'
         IMAGES      = 'C:\\Temp\\jenkins\\images\\'
         MODEL_PATH  = 'C:\\Users\\Ivan\\Desktop\\Work\\Bhairav-Mehta'
@@ -75,6 +75,8 @@ pipeline {
             steps {
                 sshagent(credentials : ['1ef423a1-271d-493c-a0ab-b4203dc005ee']) {
                     sh '''
+                        mkdir -p ~/.ssh
+                        touch ~/.ssh/known_hosts
                         ssh-keyscan -H ${IP} >> ~/.ssh/known_hosts
 
                         cd thebox/docker
@@ -106,7 +108,7 @@ pipeline {
                         ssh ${USER}@${IP} docker run -dit --restart always --name onnx_server -p 8082:80 -v "${MODEL_PATH}":/usr/local/apache2/htdocs/ httpd:2.4
 
                         ssh ${USER}@${IP} docker-compose -f ${TMP}/compose.yml up -d
-                        ssh ${USER}@${IP} curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" -d @C:\\Production\\src\\thebox_testapp\\keyStrokes\\ksScenarion.json "http://localhost:10002/scenario"
+                        ssh ${USER}@${IP} curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" -d @C:\\Production\\src\\thebox_testapp\\keyStrokes\\ksScenarion.json "http://127.0.0.1:10002/scenario"
                         ssh ${USER}@${IP} docker container run --network host --name demo --rm -it thebox/demo python3.6 keyStrokes/ksNotify_app.py
                         ssh ${USER}@${IP} rm -r ${IMAGES}
                     '''

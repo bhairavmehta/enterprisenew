@@ -37,8 +37,6 @@ class program:
                 print(f"")
                 notif_callback(o.notification_id)
 
-        print("Received thread termination request. Bailing out.")
-
     def main(self):
 
         # start side thread on listening to notification
