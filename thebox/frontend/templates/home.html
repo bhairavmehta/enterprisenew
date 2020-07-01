@@ -17,12 +17,40 @@
     <section>
       <p class="section-head">Description</p>
       <p>
-        This is an example of the model which detects
+        This is an example of the model which tracks each struck of a key and it guesses the user.
       </p>
-      <p>The MNIST dataset is used as training data.</p>
+      <p>To use it, pretend that you are writing something in the search bar below.</p>
     </section>
 
-    <img src="/static/images/notme.jpg" />
+    <section>
+      <p class="section-head">Search</p>
+      <div>
+        <form>
+          <input id="search" placeholder="www.facebook.com">
+          <a href=# id=test><button id="train">Search</button> </a>
+        </form>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-head">Result</p>
+
+      <img src="/static/images/notme.jpg" />
+    </section>
+
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script type=text/javascript>
+          $(function() {
+            $('a#test').bind('click', function() {
+              $.getJSON('/background_process_test',
+                  function(data) {
+                //do nothing
+              });
+              return false;
+            });
+          });
+  </script>
 
   </body>
 </html>

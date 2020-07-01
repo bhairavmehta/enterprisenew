@@ -9,6 +9,10 @@ body {
   color: white;
 }
 
+section {
+    margin-left: 50px;
+}
+
 p {
   max-width: 960px;
   line-height: 1.6em; }

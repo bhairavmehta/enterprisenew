@@ -14,6 +14,12 @@ def home():
     return render_template("home.html",)
 
 
+@app.route("/forward/", methods=['POST'])
+def move_forward():
+    forward_message = "Moving Forward..."
+    return render_template('home.html', forward_message=forward_message);
+
+
 # @app.route("/about")
 # def about():
 #     return render_template("about.html")

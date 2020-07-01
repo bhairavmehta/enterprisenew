@@ -6,7 +6,7 @@ pipeline {
         IP          = '192.168.1.11'
         TMP         = 'C:\\Temp\\thebox'
         PROD        = 'C:\\Production'
-        IMAGES      = 'C:\\Temp\\jenkins\\images\\'
+        IMAGES      = 'C:\\Temp\\thebox\\images\\'
         MODEL_PATH  = 'C:\\Users\\Ivan\\Desktop\\Work\\Bhairav-Mehta'
     }
 
