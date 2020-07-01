@@ -14,12 +14,12 @@ def home():
     return render_template("home.html")
 
 
-@app.route("/", methods=['GET'])
-def home():
+@app.route("/demos/key-strokes", methods=['GET'])
+def key_strokes():
     return render_template("keyStrokes.html")
 
 
-@app.route('/', methods=['POST'])
+@app.route('/demos/key-strokes', methods=['POST'])
 def my_form_post():
     text = request.form['search']
     processed_text = text.lower()
