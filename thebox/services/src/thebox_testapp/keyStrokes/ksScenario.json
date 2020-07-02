@@ -1,57 +1,61 @@
 {
-"scenario_name": "keystroke scenario",
-"scenario_definition":
-{
-"inference_definition":
-{
-"in_topic": "in_topic_ks_infer_test",
-"out_topic": "out_topic_ks_infer_test",
-"model_descriptor":
-{
-"model_type": "ONNX",
-"model_name": "keystroke",
-"model_input_info": [
-{
-"data_name": "float_input",
-"data_type": "float32",
-"data_shape": [1, 295]
-}
-],
-"model_output_info": [
-{
-"data_name": "label",
-"data_type": "float32",
-"data_shape": [1, 1]
-},
-{
-"data_name": "probabilities",
-"data_type": "float32",
-"data_shape": [1, 2]
-}
-],
-"model_location": "http://host.docker.internal:8082/keystroke.onnx"
-},
-"pred_type":
-{
-"prediction_data_type": "classificationtype"
-}
-},
-"notification_definition":
-{
-"in_topic": "out_topic_ks_infer_test",
-"out_topic": "out_topic_ks_notif_test",
-"rules": [
-{
-"rule_name": "is_me",
-"rule_content": "prediction['label'].data[0] > 0.5",
-"notification_id": "test_notification_is_me"
-},
-{
-"rule_name": "is_not_me",
-"rule_content": "prediction['label'].data[0] < 0.5",
-"notification_id": "test_notification_is_not_me"
-}
-]
-}
-}
+  "scenario_name": "keystroke scenario",
+  "scenario_definition": {
+    "inference_definition": {
+      "in_topic": "in_topic_ks_infer_test",
+      "out_topic": "out_topic_ks_infer_test",
+      "model_descriptor": {
+        "model_type": "ONNX",
+        "model_name": "keystroke",
+        "model_input_info": [
+          {
+            "data_name": "float_input",
+            "data_type": "float32",
+            "data_shape": [
+              1,
+              295
+            ]
+          }
+        ],
+        "model_output_info": [
+          {
+            "data_name": "label",
+            "data_type": "float32",
+            "data_shape": [
+              1,
+              1
+            ]
+          },
+          {
+            "data_name": "probabilities",
+            "data_type": "float32",
+            "data_shape": [
+              1,
+              2
+            ]
+          }
+        ],
+        "model_location": "http://host.docker.internal:8082/keystroke.onnx"
+      },
+      "pred_type": {
+        "prediction_data_type": "classificationtype"
+      }
+    },
+    "notification_definition": {
+      "in_topic": "out_topic_ks_infer_test",
+      "out_topic": "out_topic_ks_notif_test",
+      "rules": [
+        {
+          "rule_name": "is_me",
+          "rule_content": "prediction['label'].data[0] > 0.5",
+          "notification_id": "test_notification_is_me"
+        },
+        {
+          "rule_name": "is_not_me",
+          "rule_content": "prediction['label'].data[0] < 0.5",
+          "notification_id": "test_notification_is_not_me"
+        }
+      ]
+    }
+  }
 }

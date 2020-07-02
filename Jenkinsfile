@@ -95,14 +95,14 @@ pipeline {
                         scp -r ../services/src ${USER}@${IP}:${PROD}
                         rm -r /tmp/images
 
+                        ssh ${USER}@${IP} docker run -dit --restart always --name onnx_server -p 8082:80 -v "${MODEL_PATH}":/usr/local/apache2/htdocs/ httpd:2.4 || true
+
                         ssh ${USER}@${IP} docker load -i ${IMAGES}notif.tar
                         ssh ${USER}@${IP} docker load -i ${IMAGES}inf.tar
                         ssh ${USER}@${IP} docker load -i ${IMAGES}orch.tar
                         ssh ${USER}@${IP} docker load -i ${IMAGES}kafka.tar
                         ssh ${USER}@${IP} docker load -i ${IMAGES}zookeeper.tar
                         ssh ${USER}@${IP} docker load -i ${IMAGES}demo.tar
-
-                        ssh ${USER}@${IP} docker run -dit --restart always --name onnx_server -p 8082:80 -v "${MODEL_PATH}":/usr/local/apache2/htdocs/ httpd:2.4 || true
 
                         ssh ${USER}@${IP} docker-compose -f ${TMP}/compose.yml up -d
                         ssh ${USER}@${IP} curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" -d @C:\\Production\\src\\thebox_testapp\\keyStrokes\\ksScenario.json "http://127.0.0.1:10002/scenario"

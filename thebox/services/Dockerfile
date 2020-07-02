@@ -17,4 +17,4 @@ RUN python3.6 -m pip install -r /root/thebox/requirements.txt
 RUN for file in /root/thebox/src/thebox_testapp/*/requirements.txt; do python3.6 -m  pip install -r $file; done
 ENV PYTHONPATH=/root/thebox/src
 
-WORKDIR /root/thebox/src/thebox_testapp
+WORKDIR /root/thebox/src/web_app

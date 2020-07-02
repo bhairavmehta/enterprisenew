@@ -35,3 +35,12 @@ li{
   color: #FF851B;
   margin-bottom: 0.5em;
 }
+
+.kill_button{
+  background: #EF6C00;
+  color: #FFFFFF;
+  border-radius: 10px;
+  border-style: none;
+  font-size: 16px;
+}
+

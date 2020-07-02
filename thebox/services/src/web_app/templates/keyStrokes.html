@@ -36,7 +36,7 @@
     <section>
       <p class="section-head">Search</p>
       <div>
-        <form method="POST" onsubmit="myFunction()">
+        <form method="POST">
           <input id="search" name="search" placeholder="www.facebook.com">
           <input id="submit" type="submit">
         </form>
@@ -46,6 +46,15 @@
     <section id="result" hidden>
       <p class="section-head">Result</p>
       <img id="img" src="/static/images/{{data}}.jpg"/>
+    </section>
+
+    <section id="kill">
+      <p class="section-head">Shutdown</p>
+      <p>Press the button to stop the server.</p>
+      <form method="POST" action="../shutdown">
+        <input class="kill_button" type="submit" value="Stop">
+      </form>
+
     </section>
 
   </body>

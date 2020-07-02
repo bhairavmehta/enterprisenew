@@ -41,3 +41,8 @@ docker container run --name demo --rm -it thebox/demo bash
 cd keyStrokes && python3.6 ksNotify_app.py -s host.docker.internal
 python3.6 -m pip install pynput
 cd root/thebox/src/thebox_testapp/keyStrokes/
+
+SET PYTHONPATH=C:\Users\Ivan\Desktop\Work\Bhairav-Mehta\enterprise.mhhd\thebox\services\src  && ^
+cd C:\Users\Ivan\Desktop\Work\Bhairav-Mehta\enterprise.mhhd\thebox\services\src\web_app&& ^
+activate thebox_dev && ^
+python main.py

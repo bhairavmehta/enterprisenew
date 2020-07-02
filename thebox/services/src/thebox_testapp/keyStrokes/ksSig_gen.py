@@ -1,16 +1,12 @@
 from pynput import keyboard
 import pandas as pd
 import win32gui 
-import tkinter
 import getopt
 import sys
 
 
 import numpy as np
 from collections import defaultdict
-from sklearn import model_selection, preprocessing, linear_model, naive_bayes, metrics, svm
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from sklearn import decomposition, ensemble
 
 import pickle
 from thebox.pubsub_kafka.pubsubkafka import PubSubManagerKafka, PubSubProducer, PubSubConnectionKafka
@@ -106,14 +102,12 @@ def generateOriginalText(filename):
     
         for char in charsIndex:
             chars[char]=delSt.count(char)
-        
 
         wordSt = defaultdict(int)   
         wordIndex=list(set(words))
         for word in wordIndex:
             wordSt[word]=words.count(word)
         return doc
-
 
 
 def logKeyStrokes(filename):
@@ -148,7 +142,6 @@ def logKeyStrokes(filename):
                 else:
                     f.write(format(key)) 
                 f.close()
-        
 
         def on_release(key):
 

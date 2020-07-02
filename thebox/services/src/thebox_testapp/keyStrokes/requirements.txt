@@ -1,2 +1,2 @@
 pynput
-sklearn
+scikit-learn==0.21.3

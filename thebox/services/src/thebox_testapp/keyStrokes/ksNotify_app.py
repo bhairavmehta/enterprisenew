@@ -1,20 +1,21 @@
 import sys
 import getopt
-from thebox.pubsub_kafka.pubsubkafka import PubSubManagerKafka, PubSubProducer, PubSubConnectionKafka
-from thebox.messages.notificationmessage import NotificationMessage
+from thebox.pubsub_kafka.pubsubkafka import PubSubManagerKafka, PubSubConnectionKafka
 import threading
-from PIL import Image
+from web_app.main import app
+import signal
+import time
+import requests
 
 
-def printhelp():
-    help = """
-Usage:
-    python notif_app.py -s <server_host:server_port> -t <notification_topic>
-"""
-    print(help)
+def print_help():
+    print("""
+        Usage:
+            python notif_app.py -s <server_host:server_port> -t <notification_topic>
+        """)
 
 
-class program:
+class Program:
 
     terminating_thread = False
 
@@ -29,7 +30,7 @@ class program:
 
         print("Starting listening for notifications ...")
 
-        while True:
+        while not self.terminating_thread:
             (t, o) = consumer.poll(1)
             if o is not None:
                 print(f"Getting message from topic t={t}:")
@@ -42,16 +43,36 @@ class program:
         # start side thread on listening to notification
         def handle_callback(notif_id: str):
             print(notif_id)
-            if "is_not_me" in notif_id:
-                print("It is not me.")
-            else:
-                print("It's me")
+            headers = {
+                'Content-type': 'application/json',
+            }
 
+            if "is_not_me" in notif_id:
+                data = '{"result":"not_me"}'
+            else:
+                data = '{"result":"me"}'
+            response = requests.post('http://127.0.0.1:5000/demos/key-strokes', headers=headers, data=data)
+            print(response)
         t = threading.Thread(target=self.signal_thread, args=(handle_callback,))
+        frontend_app = threading.Thread(target=app.run, args=())
+
+        def signal_handler(sig, frame):
+            print('>>>>>>>>>>>> Interupt')
+            self.terminating_thread = True
+            response = requests.post('http://127.0.0.1:5000/shutdown',
+                                     headers={'Content-type': 'application/json'},
+                                     data='{}')
+            print(response)
+            t.join()
+            frontend_app.join()
+            exit()
+        signal.signal(signal.SIGINT, signal_handler)
+
+        frontend_app.start()
         t.start()
 
-        self.terminating_thread = True
-        t.join()
+        while True:
+            time.sleep(1)
 
 
 def main():
@@ -61,12 +82,12 @@ def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hs:t:", ["server=", "topic="])
     except getopt.GetoptError:
-        printhelp()
+        print_help()
         sys.exit(2)
 
     for opt, arg in opts:
         if opt == '-h':
-            printhelp()
+            print()
             sys.exit()
         elif opt in ("-s", "--server"):
             pubsub_endpoint = arg
@@ -77,8 +98,10 @@ def main():
     print(f"Endpoint: {pubsub_endpoint}")
     print(f"Topic: {topic}")
 
-    prog = program(pubsub_endpoint, topic)
+    # app.run()
+    prog = Program(pubsub_endpoint, topic)
     prog.main()
 
 
-main()
+if __name__ == "__main__":
+    main()
