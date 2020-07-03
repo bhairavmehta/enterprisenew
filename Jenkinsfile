@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     environment {
-        USER        = 'ivan'
-        IP          = '172.20.10.2'
-        TMP         = 'C:\\Temp\\thebox'
-        PROD        = 'C:\\Production'
-        SCENARIO    = 'C:\\Production\\src\\thebox_testapp\\keyStrokes\\ksScenario.json'
-        IMAGES      = 'C:\\Temp\\thebox\\images\\'
-        MODEL_PATH  = 'C:\\Users\\Ivan\\Desktop\\Work\\Bhairav-Mehta' // Path to keystrokes.onnx model
-        CREDENTIALS = '	99d151bc-aedf-401d-8c55-09732143f08b'
+        USER        = 'ivan'                                                                // Username for the server
+        IP          = '172.20.10.2'                                                         // Server IP
+        TMP         = 'C:\\Temp\\thebox'                                                    // Temporary folder inside the server
+        PROD        = 'C:\\Production'                                                      // Production directory inside the server
+        SCENARIO    = 'C:\\Production\\src\\thebox_testapp\\keyStrokes\\ksScenario.json'    // Path to the scenario (just the prefix should be modified to corresspond the PROD env var)
+        IMAGES      = 'C:\\Temp\\thebox\\images\\'                                          // Path to the images folder (just the prefix should be modified to corresspond the TMP env var)
+        MODEL_PATH  = 'C:\\Users\\Ivan\\Desktop\\Work\\Bhairav-Mehta'                       // Path to the keystrokes.onnx model
+        CREDENTIALS = '	99d151bc-aedf-401d-8c55-09732143f08b'                               // Credentials for the ssh-agnet, found on Jenkins -> Manage Credentials -> ID of the corrsponding credential
     }
 
     stages {
