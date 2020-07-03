@@ -8,6 +8,7 @@ pipeline {
         PROD        = 'C:\\Production'
         IMAGES      = 'C:\\Temp\\thebox\\images\\'
         MODEL_PATH  = 'C:\\Users\\Ivan\\Desktop\\Work\\Bhairav-Mehta' // Path to keystrokes.onnx model
+        CREDENTIALS = '3b3816d8-fd0d-4d2e-ba6a-210018088cfe'
     }
 
     stages {
@@ -55,10 +56,10 @@ pipeline {
                     dos2unix build_dist.sh
                     pip install -r requirements.txt
 
-                    docker build  --no-cache -t thebox/demo .
-
                     cd ../docker
                     make
+                    cd ../services
+                    docker build  --no-cache -t thebox/demo .
                 '''
             }
         }
@@ -73,7 +74,7 @@ pipeline {
 
         stage('Deployment') {
             steps {
-                sshagent(credentials : ['3b3816d8-fd0d-4d2e-ba6a-210018088cfe']) {
+                sshagent(credentials : [${CREDENTILAS}]) {
                     sh '''
                         mkdir -p ~/.ssh
                         touch ~/.ssh/known_hosts
