@@ -11,8 +11,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Arguments parser.')
     parser.add_argument('--pubsub_endpoint', type=str, default='localhost:10001',
                         help='IP address of the pubsub endpoint.')
-    parser.add_argument('--frontend_ip', type=str, default='localhost:5000',
-                        help='IP address of the server.')
+    parser.add_argument('--frontend_ip', type=str, default='localhost:5000', help='IP address of the server.')
 
     return parser.parse_args()
 
@@ -81,10 +80,10 @@ def shutdown():
 if __name__ == "__main__":
     args = parse_args()
 
-    key_strokes_pubsub_endpoint = args.pubsub_endpoint
     in_topic = "in_topic_ks_infer_test"
     out_topic = "out_topic_ks_notif_test"
-    tel_client = TelemetryClient(key_strokes_pubsub_endpoint, in_topic)
-    key_strokes_app = KeyStrokes(key_strokes_pubsub_endpoint, out_topic)
+    tel_client = TelemetryClient(args.pubsub_endpoint, in_topic)
+
+    key_strokes_app = KeyStrokes(args.server_ip, out_topic)
     key_strokes_app.run()
-    app.run(host=args.frontend_ip)
+    app.run(host=args.frontend_host, port=args.frontend_port)

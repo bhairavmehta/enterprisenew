@@ -3,11 +3,11 @@ pipeline {
 
     environment {
         USER        = 'ivan'
-        IP          = '192.168.1.11'
+        IP          = '172.20.10.2'
         TMP         = 'C:\\Temp\\thebox'
         PROD        = 'C:\\Production'
         IMAGES      = 'C:\\Temp\\thebox\\images\\'
-        MODEL_PATH  = 'C:\\Users\\Ivan\\Desktop\\Work\\Bhairav-Mehta'
+        MODEL_PATH  = 'C:\\Users\\Ivan\\Desktop\\Work\\Bhairav-Mehta' // Path to keystrokes.onnx model
     }
 
     stages {
@@ -55,7 +55,7 @@ pipeline {
                     dos2unix build_dist.sh
                     pip install -r requirements.txt
 
-                    docker build -t thebox/demo .
+                    docker build  --no-cache -t thebox/demo .
 
                     cd ../docker
                     make
@@ -105,9 +105,10 @@ pipeline {
                         ssh ${USER}@${IP} docker load -i ${IMAGES}demo.tar
 
                         ssh ${USER}@${IP} docker-compose -f ${TMP}/compose.yml up -d
-                        ssh ${USER}@${IP} curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" -d @C:\\Production\\src\\thebox_testapp\\keyStrokes\\ksScenario.json "http://127.0.0.1:10002/scenario"
-                        ssh ${USER}@${IP} docker container run --network host --name demo --rm -it thebox/demo python3.6 keyStrokes/ksNotify_app.py
                         ssh ${USER}@${IP} rm -r ${IMAGES}
+
+                        ssh ${USER}@${IP} curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" -d @C:\\Production\\src\\thebox_testapp\\keyStrokes\\ksScenario.json "http://127.0.0.1:10002/scenario"
+                        ssh ${USER}@${IP} docker exec thebox_demo_1 python3.6 main.py --frontend_ip 0.0.0.0 --pubsub_endpoint kafka-pubsub:9092
                     '''
                 }
             }

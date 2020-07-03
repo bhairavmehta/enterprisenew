@@ -27,6 +27,7 @@ class KeyStrokes:
         print("Starting listening for notifications ...")
         while not terminating_thread():
             (t, o) = consumer.poll(1)
+            print(t)
             if o is not None:
                 print(terminating_thread())
                 if o.notification_id == 'is_not_me':
@@ -43,7 +44,6 @@ class KeyStrokes:
         print('freed')
 
     def run(self):
-
         self.thread = threading.Thread(target=self.signal_thread, args=(lambda: self.terminating_thread, ))
         self.thread.start()
         return

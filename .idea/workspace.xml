@@ -20,22 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="13dd00a5-01a8-4b19-adde-2a48ed6dfd60" name="Default Changelist" comment="Nits.">
-      <change afterPath="$PROJECT_DIR$/thebox/services/src/web_app/demos/keystrokes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/thebox/services/src/web_app/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/Jenkinsfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/commands.txt" beforeDir="false" afterPath="$PROJECT_DIR$/commands.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thebox/frontend/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/thebox/frontend/static/css/template.css" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/services/src/web_app/static/css/template.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thebox/frontend/static/images/me.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/services/src/web_app/static/images/me.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thebox/frontend/static/images/notme.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/services/src/web_app/static/images/not_me.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thebox/frontend/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/services/src/web_app/templates/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thebox/frontend/templates/keyStrokes.html" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/services/src/web_app/templates/keyStrokes.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thebox/services/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/services/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thebox/services/src/thebox_testapp/keyStrokes/ksNotify_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/services/src/thebox_testapp/keyStrokes/ksNotify_app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thebox/services/src/thebox_testapp/keyStrokes/ksScenario.json" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/services/src/thebox_testapp/keyStrokes/ksScenario.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thebox/services/src/thebox_testapp/keyStrokes/ksSig_gen.py" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/services/src/thebox_testapp/keyStrokes/ksSig_gen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thebox/services/src/thebox_testapp/keyStrokes/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/services/src/thebox_testapp/keyStrokes/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thebox/docker/compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/docker/compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thebox/services/src/web_app/demos/keystrokes.py" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/services/src/web_app/demos/keystrokes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thebox/services/src/web_app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/services/src/web_app/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +68,7 @@
       <recent name="C:\Users\Ivan\Desktop\Work\Bhairav-Mehta\enterprise.mhhd\thebox\frontend\static\images" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main (1)">
+  <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="enterprise.mhhd" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -145,8 +134,6 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main (1)" />
-        <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.main" />
       </list>
     </recent_temporary>

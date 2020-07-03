@@ -92,5 +92,18 @@ services:
     depends_on:
       - couchdb-orch-svc
       - kafka-pubsub
+  demo:
+    image: thebox/demo
+    environment:
+      - THEBOX_EVENTQUEUE_KAFKA_SERVER=kafka-pubsub:9092
+      - SERVICE_DEPENDENCIES=kafka-pubsub:9092;
+    networks:
+      - thebox-net
+    ports:
+      - "5000:5000"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - kafka-pubsub
 networks:
   thebox-net:
