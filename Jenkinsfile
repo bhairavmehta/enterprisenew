@@ -59,7 +59,7 @@ pipeline {
                     cd ../docker
                     make
                     cd ../services
-                    docker build  --no-cache -t thebox/demo .
+                    docker build -t thebox/demo .
                 '''
             }
         }
@@ -74,7 +74,7 @@ pipeline {
 
         stage('Deployment') {
             steps {
-                sshagent(credentials : [${CREDENTILAS}]) {
+                sshagent(credentials : ["${env.CREDENTIALS}"]) {
                     sh '''
                         mkdir -p ~/.ssh
                         touch ~/.ssh/known_hosts
