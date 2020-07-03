@@ -6,6 +6,7 @@ pipeline {
         IP          = '172.20.10.2'
         TMP         = 'C:\\Temp\\thebox'
         PROD        = 'C:\\Production'
+        SCENARIO    = 'C:\\Production\\src\\thebox_testapp\\keyStrokes\\ksScenario.json'
         IMAGES      = 'C:\\Temp\\thebox\\images\\'
         MODEL_PATH  = 'C:\\Users\\Ivan\\Desktop\\Work\\Bhairav-Mehta' // Path to keystrokes.onnx model
         CREDENTIALS = '	99d151bc-aedf-401d-8c55-09732143f08b'
@@ -109,8 +110,8 @@ pipeline {
                         ssh ${USER}@${IP} docker-compose -f ${TMP}/compose.yml up -d
                         ssh ${USER}@${IP} rm -r ${IMAGES}
 
-                        ssh ${USER}@${IP} curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" -d @C:\\Production\\src\\thebox_testapp\\keyStrokes\\ksScenario.json "http://127.0.0.1:10002/scenario"
-                        ssh ${USER}@${IP} docker exec thebox_demo_1 python3.6 main.py --frontend_ip 0.0.0.0 --pubsub_endpoint kafka-pubsub:9092
+                        ssh ${USER}@${IP} curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" -d @${SCENARIO} "http://127.0.0.1:10002/scenario"
+                        ssh ${USER}@${IP} docker exec -d thebox_demo_1 python3.6 main.py --frontend_ip 0.0.0.0 --pubsub_endpoint kafka-pubsub:9092
                     '''
                 }
             }

@@ -22,6 +22,7 @@
     <list default="true" id="13dd00a5-01a8-4b19-adde-2a48ed6dfd60" name="Default Changelist" comment="Nits.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/Jenkinsfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thebox/services/src/web_app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/thebox/services/src/web_app/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,9 +201,10 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1253" height="403" key="GridCell.Tab.0.right/0.0.2560.1400@0.0.2560.1400" timestamp="1593703939276" />
-    <state x="1421" y="349" key="SettingsEditor" timestamp="1593690810469">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state x="1213" y="298" key="SettingsEditor" timestamp="1593779776161">
+      <screen x="0" y="0" width="2194" height="1194" />
     </state>
+    <state x="1213" y="298" key="SettingsEditor/0.0.2194.1194@0.0.2194.1194" timestamp="1593779776161" />
     <state x="1421" y="349" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1593690810469" />
     <state x="1530" y="358" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1593623059433">
       <screen x="0" y="0" width="2560" height="1400" />
