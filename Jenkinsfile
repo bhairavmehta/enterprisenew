@@ -8,7 +8,7 @@ pipeline {
         PROD        = 'C:\\Production'
         IMAGES      = 'C:\\Temp\\thebox\\images\\'
         MODEL_PATH  = 'C:\\Users\\Ivan\\Desktop\\Work\\Bhairav-Mehta' // Path to keystrokes.onnx model
-        CREDENTIALS = '3b3816d8-fd0d-4d2e-ba6a-210018088cfe'
+        CREDENTIALS = '	99d151bc-aedf-401d-8c55-09732143f08b'
     }
 
     stages {

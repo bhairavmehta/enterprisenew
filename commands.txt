@@ -27,11 +27,6 @@ docker container run ^
   --env JAVA_OPTS="-Xmx4096m -Djava.awt.headless=true" ^
   jenkins/jenkins:lts
 
-                    cd ../services
-                    export PYTHONPATH=$(pwd)/src
-                    cd src/thebox_testapp/keyStrokes
-                    python3 ksNotify_app.py -s localhost:10001
-
 https://winscp.net/eng/docs/guide_windows_openssh_server
 https://winscp.net/download/WinSCP-5.17.6-Setup.exe
 
